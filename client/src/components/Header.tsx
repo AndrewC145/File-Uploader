@@ -16,12 +16,12 @@ function Header() {
         </h1>
         <div className="space-x-4">
           <HeaderButton
-            className="bg-white px-2 py-1 text-sm text-black hover:bg-gray-100"
+            className="bg-white px-3 py-2 text-sm text-black hover:bg-gray-100"
             text="Sign Up"
             link="/register"
           />
           <HeaderButton
-            className="bg-blue-400 px-2 py-1 text-white hover:bg-blue-500"
+            className="bg-blue-400 px-3 py-2 text-white hover:bg-blue-500"
             text="Login"
             link="/login"
           />
