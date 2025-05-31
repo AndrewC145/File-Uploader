@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
 import Header from "./components/Header";
 import Home from "./components/Home";
+import Register from "./components/Register";
+import Login from "./components/Login";
 import cloudBg from "./assets/images/cloud-hero.jpg";
 
 function AppContext() {
@@ -25,11 +27,11 @@ function AppContext() {
   return (
     <>
       <Header />
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </main>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
     </>
   );
 }

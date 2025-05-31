@@ -11,12 +11,12 @@ function Header() {
   return (
     <header className="p-3 md:p-5 xl:p-7">
       <nav className="flex items-center justify-between border-b-1 pb-3">
-        <h1 className="text-md font-nunito font-bold text-white md:text-lg xl:text-3xl 2xl:text-4xl">
+        <h1 className="text-md font-nunito font-bold text-gray-800 md:text-lg xl:text-3xl 2xl:text-4xl">
           Packet
         </h1>
         <div className="space-x-4">
           <HeaderButton
-            className="bg-white px-3 py-2 text-sm text-black hover:bg-gray-100"
+            className="bg-gray-200 px-3 py-2 text-sm text-black hover:bg-gray-300"
             text="Sign Up"
             link="/register"
           />
