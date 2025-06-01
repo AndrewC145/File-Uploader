@@ -1,6 +1,6 @@
 import FormTemplate from "../FormTemplate";
-import InputForm from "./InputForm";
 import { Link } from "react-router";
+import InputForm from "./InputForm";
 import FormBtn from "./FormBtn";
 
 function Login() {
