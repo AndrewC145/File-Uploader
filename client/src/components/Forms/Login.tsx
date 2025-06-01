@@ -1,7 +1,7 @@
-import FormTemplate from "./FormTemplate";
+import FormTemplate from "../FormTemplate";
 import InputForm from "./InputForm";
-import { Button } from "./ui/button";
 import { Link } from "react-router";
+import FormBtn from "./FormBtn";
 
 function Login() {
   return (
@@ -14,9 +14,7 @@ function Login() {
           Create an account
         </Link>
       </p>
-      <Button type="submit" className="bg-blue-300 text-base hover:bg-blue-400">
-        Login
-      </Button>
+      <FormBtn description="Login" />
     </FormTemplate>
   );
 }

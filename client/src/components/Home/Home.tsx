@@ -1,5 +1,5 @@
 import Hero from "./Hero";
-import Features from "./Features";
+import Features from "../Features";
 
 function Home() {
   return (

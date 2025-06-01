@@ -1,5 +1,5 @@
 import InputForm from "./InputForm";
-import { Button } from "./ui/button";
+import FormBtn from "./FormBtn";
 
 function Register() {
   return (
@@ -14,9 +14,7 @@ function Register() {
           id="confirmPassword"
           name="confirmPassword"
         />
-        <Button type="submit" className="bg-blue-300 text-base hover:bg-blue-400">
-          Register
-        </Button>
+        <FormBtn description="Register" />
       </form>
     </main>
   );
