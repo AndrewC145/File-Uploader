@@ -9,7 +9,7 @@ type HeaderButtonProps = {
 
 function Header() {
   return (
-    <header className="p-3 md:p-5 xl:p-7">
+    <header className="p-3 pb-0 md:p-5 md:pb-0 xl:p-7 xl:pb-0">
       <nav className="flex items-center justify-between border-b-1 pb-3">
         <h1 className="text-md font-nunito font-bold text-gray-800 md:text-lg xl:text-3xl 2xl:text-4xl">
           Packet

@@ -3,6 +3,7 @@ import Header from "./components/home/Header";
 import Home from "./components/home/Home";
 import Register from "./components/forms/Register";
 import Login from "./components/forms/Login";
+import Storage from "./components/storage/Storage";
 import cloudBg from "./assets/images/cloud-hero.jpg";
 
 function AppContext() {
@@ -31,6 +32,7 @@ function AppContext() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/storage" element={<Storage />} />
       </Routes>
     </>
   );
