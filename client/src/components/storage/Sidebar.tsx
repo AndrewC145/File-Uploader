@@ -3,7 +3,7 @@ import FolderDialog from "./FolderDialog";
 
 function Sidebar() {
   return (
-    <aside className="h-screen max-w-[20%] bg-gray-200 font-nunito">
+    <aside className="h-screen w-[20%] bg-gray-200">
       <div className="px-4 py-2">
         <div className="flex items-center justify-between p-2">
           <h2 className="text-lg md:text-xl 2xl:text-2xl">Folders</h2>
