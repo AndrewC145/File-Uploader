@@ -2,19 +2,20 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.ts",
   "scripts": {
+    "dev": "tsc watch --env-file=.env src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
+    "@prisma/client": "^6.9.0",
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
     "@types/express-session": "^1.18.1",
-    "@types/node": "^22.15.21",
     "@types/passport": "^1.0.17",
     "@types/passport-local": "^1.0.38",
     "bcryptjs": "^3.0.2",
@@ -27,7 +28,9 @@
     "pg": "^8.16.0"
   },
   "devDependencies": {
+    "@types/node": "^22.15.30",
     "@types/pg": "^8.15.2",
+    "prisma": "^6.9.0",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   }
