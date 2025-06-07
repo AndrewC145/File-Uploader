@@ -1,11 +1,13 @@
-import FormTemplate from "../FormTemplate";
+import FormTemplate from "./FormTemplate";
 import { Link } from "react-router";
 import InputForm from "./InputForm";
 import FormBtn from "./FormBtn";
 
 function Login() {
+  const PORT = import.meta.env.VITE_API_URL;
+  const action = `${PORT}/login`;
   return (
-    <FormTemplate title="Welcome to Packet!">
+    <FormTemplate action={action} title="Welcome to Packet!">
       <InputForm label="Username" type="text" id="username" name="username" />
       <InputForm label="Password" type="password" id="password" name="password" />
       <p className="mb-4">
