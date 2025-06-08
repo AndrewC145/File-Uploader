@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import passport from 'passport';
 import session from 'express-session';
+import registerRoute from './routes/registerRoute';
 
 const app = express();
 const corsOptions = {
@@ -30,6 +31,8 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use('/register', registerRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

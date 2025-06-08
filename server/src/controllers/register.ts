@@ -5,23 +5,28 @@ import prisma from '../client';
 
 const registerValidation = [
   body('username')
-    .isEmpty()
+    .notEmpty()
     .withMessage('Username is required')
+    .bail()
     .isLength({ min: 3 })
+    .bail()
     .withMessage('Username must be at least 3 characters long')
     .isAlphanumeric()
+    .bail()
     .withMessage('Username must be alphanumeric'),
 
   body('password')
-    .isEmpty()
+    .notEmpty()
     .withMessage('Password is required')
+    .bail()
     .isLength({ min: 8 })
     .withMessage('Password must be at least 8 characters')
     .matches(/\d/)
+    .bail()
     .withMessage('Password must contain at least one number'),
 
   body('confirmPassword')
-    .isEmpty()
+    .notEmpty()
     .withMessage('Confirm Password is required')
     .custom((value, { req }) => value === req.body.password)
     .withMessage('Passwords do not match'),
@@ -37,12 +42,17 @@ async function registerUser(req: Request, res: Response): Promise<any> {
 
   const { username, password } = req.body;
   const hashedPassword: string = await hashPassword(password);
-  await prisma.users.create({
-    data: {
-      username: username,
-      password: hashedPassword,
-    },
-  });
+  try {
+    const user = await prisma.users.create({
+      data: {
+        username: username,
+        password: hashedPassword,
+      },
+    });
+    return res.status(201).json({ message: 'User created successfully', user });
+  } catch (error: any) {
+    return res.status(400).json({ error: error });
+  }
 }
 
 async function hashPassword(password: string): Promise<any> {
