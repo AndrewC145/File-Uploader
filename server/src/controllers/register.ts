@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { body, Result, validationResult } from 'express-validator';
-import bcrypt from 'bcryptjs';
 import prisma from '../client';
+import { hashPassword, checkUser } from '../db/queries';
 
 const registerValidation = [
   body('username')
@@ -42,6 +42,12 @@ async function registerUser(req: Request, res: Response): Promise<any> {
 
   const { username, password } = req.body;
   const hashedPassword: string = await hashPassword(password);
+  const userExists = await checkUser(username, hashedPassword);
+
+  if (userExists) {
+    return res.status(400).json({ error: 'Username already exists' });
+  }
+
   try {
     const user = await prisma.users.create({
       data: {
@@ -53,12 +59,6 @@ async function registerUser(req: Request, res: Response): Promise<any> {
   } catch (error: any) {
     return res.status(400).json({ error: error });
   }
-}
-
-async function hashPassword(password: string): Promise<any> {
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-  return hashedPassword;
 }
 
 export { registerValidation, registerUser };
