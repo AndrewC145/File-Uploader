@@ -44,7 +44,7 @@ function Register() {
         id="confirmPassword"
         name="confirmPassword"
       />
-      {error &&
+      {error.length > 0 &&
         error.map((err, index) => (
           <p className="mb-2 text-sm text-red-400" key={index}>
             {err}

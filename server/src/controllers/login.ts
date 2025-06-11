@@ -28,7 +28,7 @@ const loginValidation = [
     .bail()
     .custom(async (value: string, { req }) => {
       const hashed = await hashPassword(value);
-      const isValid = checkUser(req.body.username, hashed);
+      const isValid = await checkUser(req.body.username, hashed);
 
       if (!isValid) {
         throw new Error('Invalid username or password');
@@ -67,10 +67,10 @@ passport.serializeUser(function (user: any, cb: Function) {
   });
 });
 
-passport.deserializeUser(async function (user: string, cb: Function) {
+passport.deserializeUser(async function (user: any, cb: Function) {
   try {
     const userData = await prisma.users.findUnique({
-      where: { username: user },
+      where: { username: user.username },
     });
 
     if (userData) {
@@ -111,7 +111,7 @@ async function loginUser(
         return res.status(200).json({ message: 'Login successful', user });
       });
     }
-  });
+  })(req, res, next);
 }
 
 export { loginValidation, loginUser };

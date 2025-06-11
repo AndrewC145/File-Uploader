@@ -4,6 +4,7 @@ import passport from 'passport';
 import session from 'express-session';
 import registerRoute from './routes/registerRoute';
 import loginRoute from './routes/loginRoute';
+import logoutRoute from './routes/logoutRoute';
 
 const app = express();
 const corsOptions = {
@@ -36,6 +37,7 @@ app.use(passport.session());
 
 app.use('/register', registerRoute);
 app.use('/login', loginRoute);
+app.use('/logout', logoutRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

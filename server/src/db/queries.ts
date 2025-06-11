@@ -7,16 +7,27 @@ async function hashPassword(password: string): Promise<any> {
   return hashedPassword;
 }
 
+async function findUser(username: string) {
+  const userExists = await prisma.users.findUnique({
+    where: {
+      username: username,
+    },
+  });
+
+  return userExists ? true : false;
+}
+
 async function checkUser(username: string, password: string): Promise<boolean> {
   const hashed = await hashPassword(password);
   const user = await prisma.users.findUnique({
     where: {
       username: username,
-      password: hashed,
     },
   });
 
-  return user ? true : false;
+  const validUser = user && (await bcrypt.compare(password, hashed));
+
+  return validUser ? true : false;
 }
 
-export { hashPassword, checkUser };
+export { hashPassword, checkUser, findUser };

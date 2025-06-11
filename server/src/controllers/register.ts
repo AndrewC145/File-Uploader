@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { body, Result, validationResult } from 'express-validator';
 import prisma from '../client';
-import { hashPassword, checkUser } from '../db/queries';
+import { hashPassword, checkUser, findUser } from '../db/queries';
 
 const registerValidation = [
   body('username')
@@ -13,7 +13,16 @@ const registerValidation = [
     .withMessage('Username must be at least 3 characters long')
     .isAlphanumeric()
     .bail()
-    .withMessage('Username must be alphanumeric'),
+    .withMessage('Username must be alphanumeric')
+    .custom(async (value: string) => {
+      const userExists = await findUser(value);
+
+      if (userExists) {
+        throw new Error('Username already exists');
+      }
+
+      return value;
+    }),
 
   body('password')
     .notEmpty()
@@ -42,11 +51,6 @@ async function registerUser(req: Request, res: Response): Promise<any> {
 
   const { username, password } = req.body;
   const hashedPassword: string = await hashPassword(password);
-  const userExists = await checkUser(username, hashedPassword);
-
-  if (userExists) {
-    return res.status(400).json({ error: 'Username already exists' });
-  }
 
   try {
     const user = await prisma.users.create({
