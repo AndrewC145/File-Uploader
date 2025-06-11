@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import UserContext from "./userContext";
-import { useNavigate } from "react-router";
 import axios from "axios";
 
 function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>(null);
-  const navigate = useNavigate();
-
   const PORT = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
