@@ -25,16 +25,18 @@ const loginValidation = [
   body('password')
     .notEmpty()
     .withMessage('Password is required')
-    .bail()
     .custom(async (value: string, { req }) => {
-      const hashed = await hashPassword(value);
-      const isValid = await checkUser(req.body.username, hashed);
+      const user = await prisma.users.findUnique({
+        where: { username: req.body.username },
+      });
+
+      const isValid = await checkUser(req.body.username, value);
 
       if (!isValid) {
-        throw new Error('Invalid username or password');
+        throw new Error('Invalid password');
       }
 
-      return hashed;
+      return value;
     }),
 ];
 

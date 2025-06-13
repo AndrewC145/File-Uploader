@@ -24,7 +24,7 @@ function Header() {
             text="Sign Up"
             link="/register"
           />
-          {user !== null ? (
+          {user === null ? (
             <HeaderButton
               className="bg-blue-400 px-3 py-2 text-white hover:bg-blue-500"
               text="Login"

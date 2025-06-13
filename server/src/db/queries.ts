@@ -18,14 +18,17 @@ async function findUser(username: string) {
 }
 
 async function checkUser(username: string, password: string): Promise<boolean> {
-  const hashed = await hashPassword(password);
   const user = await prisma.users.findUnique({
     where: {
       username: username,
     },
   });
 
-  const validUser = user && (await bcrypt.compare(password, hashed));
+  if (!user) {
+    return false;
+  }
+
+  const validUser = await bcrypt.compare(password, user.password);
 
   return validUser ? true : false;
 }
