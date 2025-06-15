@@ -39,6 +39,12 @@ app.use('/register', registerRoute);
 app.use('/login', loginRoute);
 app.use('/logout', logoutRoute);
 
+app.get('/', (req: Request, res: Response) => {
+  res.status(200).json({
+    user: req.isAuthenticated() ? req.user : null,
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

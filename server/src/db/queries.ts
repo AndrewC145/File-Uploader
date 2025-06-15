@@ -17,7 +17,7 @@ async function findUser(username: string) {
   return userExists ? true : false;
 }
 
-async function checkUser(username: string, password: string): Promise<boolean> {
+async function checkUser(username: string, password: string): Promise<any> {
   const user = await prisma.users.findUnique({
     where: {
       username: username,
@@ -30,7 +30,7 @@ async function checkUser(username: string, password: string): Promise<boolean> {
 
   const validUser = await bcrypt.compare(password, user.password);
 
-  return validUser ? true : false;
+  return validUser ? user : false;
 }
 
 export { hashPassword, checkUser, findUser };

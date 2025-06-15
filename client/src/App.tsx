@@ -13,16 +13,18 @@ function AppContext() {
 
   if (isHome) {
     return (
-      <div
-        style={{
-          backgroundImage: `url(${cloudBg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <Header />
-        <Home />
-      </div>
+      <UserProvider>
+        <div
+          style={{
+            backgroundImage: `url(${cloudBg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <Header />
+          <Home />
+        </div>
+      </UserProvider>
     );
   }
 

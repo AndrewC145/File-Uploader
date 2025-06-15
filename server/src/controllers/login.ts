@@ -25,6 +25,7 @@ const loginValidation = [
   body('password')
     .notEmpty()
     .withMessage('Password is required')
+    .bail()
     .custom(async (value: string, { req }) => {
       const user = await prisma.users.findUnique({
         where: { username: req.body.username },
@@ -72,7 +73,7 @@ passport.serializeUser(function (user: any, cb: Function) {
 passport.deserializeUser(async function (user: any, cb: Function) {
   try {
     const userData = await prisma.users.findUnique({
-      where: { username: user.username },
+      where: { id: user.id },
     });
 
     if (userData) {
@@ -110,7 +111,9 @@ async function loginUser(
           return next(loginErr);
         }
 
-        return res.status(200).json({ message: 'Login successful', user });
+        return res
+          .status(200)
+          .json({ message: `Login successful! Hi ${user.username}.`, user });
       });
     }
   })(req, res, next);
