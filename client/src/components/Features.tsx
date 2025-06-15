@@ -22,19 +22,19 @@ function Features() {
         <div className="col-span-2">
           <FeatureCard
             title="Convenient Storage"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+            description="Packet makes it easy to store your files in the cloud. With our user-friendly interface, you can upload, organize, and access your files from anywhere, anytime."
             image={easyCloud}
           />
         </div>
         <FeatureCard
           title="Secure Access"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+          description="Packet ensures that your files are stored securely. We use advanced encryption and security protocols to protect your data, so you can have peace of mind knowing your files are safe."
           image={serverImg}
           vertical={true}
         />
         <FeatureCard
           title="Access Anywhere"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+          description="Packet allows you to access your files from any device with an internet connection. Whether you're on a computer, tablet, or smartphone, you can easily retrieve your files whenever you need them."
           image={computerImg}
           vertical={true}
         />
