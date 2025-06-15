@@ -1,5 +1,6 @@
-import { Plus } from "lucide-react";
+import { Plus, FileUp } from "lucide-react";
 import FolderDialog from "./FolderDialog";
+import FileDialog from "./FileDialog";
 
 function Sidebar() {
   return (
@@ -7,7 +8,10 @@ function Sidebar() {
       <div className="px-4 py-2">
         <div className="flex items-center justify-between p-2">
           <h2 className="text-lg md:text-xl 2xl:text-2xl">Folders</h2>
-          <FolderDialog openButton={<IconButton />} />
+          <div className="flex gap-3">
+            <FolderDialog openButton={<IconButton icon={<Plus />} />} />
+            <FileDialog openButton={<IconButton icon={<FileUp />} />} />
+          </div>
         </div>
         <ul className="flex flex-col text-lg">
           <ListItem name="Folder 1" />
@@ -30,11 +34,9 @@ function ListItem({ name }: { name: string }) {
   return <li className="cursor-pointer rounded-lg p-2 hover:bg-gray-100">{name}</li>;
 }
 
-function IconButton() {
+function IconButton({ icon }: { icon: React.ReactNode }) {
   return (
-    <div className="cursor-pointer rounded-md bg-white p-1 shadow-md hover:bg-gray-100">
-      <Plus />
-    </div>
+    <div className="cursor-pointer rounded-md bg-white p-1 shadow-md hover:bg-gray-100">{icon}</div>
   );
 }
 

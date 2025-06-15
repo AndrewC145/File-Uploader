@@ -36,7 +36,7 @@ function FolderDialog({ openButton, action }: { openButton: React.ReactNode; act
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button>Create</Button>
+            <Button type="submit">Create</Button>
           </DialogFooter>
         </DialogContent>
       </form>
