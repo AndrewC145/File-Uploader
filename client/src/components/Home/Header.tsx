@@ -19,19 +19,28 @@ function Header() {
           </h1>
         </Link>
         <div className="space-x-4">
-          <HeaderButton
-            className="bg-gray-200 px-3 py-2 text-sm text-black hover:bg-gray-300"
-            text="Sign Up"
-            link="/register"
-          />
           {user !== null ? (
-            <LogoutButton />
+            <>
+              <HeaderButton
+                className="bg-gray-200 px-3 py-2 text-sm text-black hover:bg-gray-300"
+                text="Storage"
+                link="/storage"
+              />
+              <LogoutButton />
+            </>
           ) : (
-            <HeaderButton
-              className="bg-blue-400 px-3 py-2 text-white hover:bg-blue-500"
-              text="Login"
-              link="/login"
-            />
+            <>
+              <HeaderButton
+                className="bg-gray-200 px-3 py-2 text-sm text-black hover:bg-gray-300"
+                text="Sign Up"
+                link="/register"
+              />
+              <HeaderButton
+                className="bg-blue-400 px-3 py-2 text-white hover:bg-blue-500"
+                text="Login"
+                link="/login"
+              />
+            </>
           )}
         </div>
       </nav>
