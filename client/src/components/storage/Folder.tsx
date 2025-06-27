@@ -4,4 +4,4 @@ function Folder() {
   return <FileHeader />;
 }
 
-export default FileHeader;
+export default Folder;

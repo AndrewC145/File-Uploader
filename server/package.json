@@ -12,7 +12,8 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "@prisma/client": "^6.9.0",
+    "@prisma/client": "^6.10.1",
+    "@supabase/supabase-js": "^2.50.1",
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
     "@types/express-session": "^1.18.1",
@@ -30,7 +31,7 @@
   "devDependencies": {
     "@types/node": "^22.15.30",
     "@types/pg": "^8.15.2",
-    "prisma": "^6.9.0",
+    "prisma": "^6.10.1",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   }
