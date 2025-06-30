@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { body, Result, validationResult } from 'express-validator';
 import prisma from '../client';
 import { hashPassword, findUser } from '../db/queries';
-import createBucket from './createFolder';
 
 const registerValidation = [
   body('username')
@@ -63,7 +62,6 @@ async function registerUser(req: Request, res: Response): Promise<any> {
     return res.status(201).json({
       message: 'User created successfully',
       user,
-      bucket: await createBucket(username),
     });
   } catch (error: any) {
     return res.status(400).json({ error: error });
