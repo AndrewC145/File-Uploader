@@ -24,7 +24,7 @@ import { Label } from "@radix-ui/react-label";
 function FileDialog({ openButton, action }: { openButton: React.ReactNode; action?: string }) {
   return (
     <Dialog>
-      <form action={action} method="POST">
+      <form action={action} method="POST" encType="multipart/form-data">
         <DialogTrigger>{openButton}</DialogTrigger>
         <DialogContent>
           <DialogHeader>
