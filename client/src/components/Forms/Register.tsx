@@ -4,7 +4,6 @@ import FormTemplate from "./FormTemplate";
 import axios from "axios";
 import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
-import { v4 as uuidv4 } from "uuid";
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
@@ -19,7 +18,7 @@ async function createInitialFolder(userId: string) {
 
   const { data, error } = await supabase.storage
     .from("users")
-    .upload(`${uuidv4()}-${userId}/${dummyFileName}`, dummyFileContent);
+    .upload(`${userId}/${dummyFileName}`, dummyFileContent);
 
   if (error) {
     console.error("Error creating initial folder:", error);

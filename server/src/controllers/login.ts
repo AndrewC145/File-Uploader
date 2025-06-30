@@ -3,7 +3,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { body, Result, validationResult } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
 import prisma from '../client';
-import { hashPassword, checkUser } from '../db/queries';
+import { checkUser } from '../db/queries';
 
 const loginValidation = [
   body('username')
@@ -27,10 +27,6 @@ const loginValidation = [
     .withMessage('Password is required')
     .bail()
     .custom(async (value: string, { req }) => {
-      const user = await prisma.users.findUnique({
-        where: { username: req.body.username },
-      });
-
       const isValid = await checkUser(req.body.username, value);
 
       if (!isValid) {
