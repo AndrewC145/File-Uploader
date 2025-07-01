@@ -58,7 +58,7 @@ async function uploadFile(file: File, folder: string) {
   const formData = new FormData();
 }
 
-async function fetchFolders() {
+async function fetchFolders(): Promise<any> {
   try {
     const response = await axios.get(`${PORT}/folders`, {
       headers: {

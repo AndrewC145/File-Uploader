@@ -12,10 +12,16 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
-function FolderDialog({ openButton, action }: { openButton: React.ReactNode; action?: string }) {
+type FolderDialogProps = {
+  openButton: React.ReactNode;
+  action?: string;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+};
+
+function FolderDialog({ openButton, action, onSubmit }: FolderDialogProps) {
   return (
     <Dialog>
-      <form action={action} method="POST">
+      <form action={action} method="POST" onSubmit={onSubmit}>
         <DialogTrigger>{openButton}</DialogTrigger>
         <DialogContent>
           <DialogHeader>

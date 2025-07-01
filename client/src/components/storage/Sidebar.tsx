@@ -1,18 +1,46 @@
 import { Plus, FileUp } from "lucide-react";
 import FolderDialog from "./FolderDialog";
 import FileDialog from "./FileDialog";
+import { useContext } from "react";
+import UserContext from "@/context/userContext";
+import axios from "axios";
+
+const PORT = import.meta.env.VITE_API_URL;
+const action = `${PORT}/upload`;
 
 function Sidebar() {
-  const PORT = import.meta.env.VITE_API_URL;
-  const action = `${PORT}/upload`;
+  const { user } = useContext(UserContext);
+  const folderAction = `${PORT}/${user?.id}/folders`;
 
+  const createFolder: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await axios.post(folderAction, JSON.stringify(data), {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      console.log(response);
+    } catch (error: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      console.error("Error creating folder:", error);
+    }
+  };
   return (
     <aside className="h-screen w-[20%] bg-gray-200">
       <div className="px-4 py-2">
         <div className="flex items-center justify-between p-2">
           <h2 className="text-lg md:text-xl 2xl:text-2xl">Folders</h2>
           <div className="flex gap-3">
-            <FolderDialog openButton={<IconButton icon={<Plus />} />} />
+            <FolderDialog
+              openButton={<IconButton icon={<Plus />} />}
+              action={folderAction}
+              onSubmit={createFolder}
+            />
             <FileDialog openButton={<IconButton icon={<FileUp />} />} action={action} />
           </div>
         </div>

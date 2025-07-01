@@ -19,6 +19,7 @@ async function uploadFile(req: Request, res: Response): Promise<any> {
     }
 
     console.log(file);
+    await storeFile(user.id, file.originalname, file.size, file.mimetype);
     await uploadFileToSupabase(file, user.id);
     return res.status(200).json({ message: 'File uploaded successfully.' });
   } catch (error) {

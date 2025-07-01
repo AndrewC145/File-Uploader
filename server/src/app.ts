@@ -6,6 +6,7 @@ import registerRoute from './routes/registerRoute';
 import loginRoute from './routes/loginRoute';
 import logoutRoute from './routes/logoutRoute';
 import uploadRoute from './routes/uploadRoute';
+import folderRoute from './routes/folderRoute';
 
 const app = express();
 const corsOptions = {
@@ -40,6 +41,7 @@ app.use('/register', registerRoute);
 app.use('/login', loginRoute);
 app.use('/logout', logoutRoute);
 app.use('/upload', uploadRoute);
+app.use('/:userId/folders', folderRoute);
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
