@@ -5,6 +5,7 @@ import session from 'express-session';
 import registerRoute from './routes/registerRoute';
 import loginRoute from './routes/loginRoute';
 import logoutRoute from './routes/logoutRoute';
+import uploadRoute from './routes/uploadRoute';
 
 const app = express();
 const corsOptions = {
@@ -38,6 +39,7 @@ app.use(passport.session());
 app.use('/register', registerRoute);
 app.use('/login', loginRoute);
 app.use('/logout', logoutRoute);
+app.use('/upload', uploadRoute);
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({

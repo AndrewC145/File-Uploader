@@ -4,7 +4,7 @@ import multer from 'multer';
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-async function uploadFile(req: Request, res: Response) {
+async function uploadFile(req: Request, res: Response): Promise<any> {
   try {
     const file = req.file;
     if (!file) {
@@ -26,7 +26,10 @@ async function uploadFile(req: Request, res: Response) {
   }
 }
 
-async function uploadFileToSupabase(file: Express.Multer.File, userId: string) {
+async function uploadFileToSupabase(
+  file: Express.Multer.File,
+  userId: string
+): Promise<any> {
   const { data, error } = await supabase.storage
     .from('users')
     .upload(`${userId}/Home`, file.buffer, {
