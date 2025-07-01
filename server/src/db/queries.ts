@@ -33,4 +33,25 @@ async function checkUser(username: string, password: string): Promise<any> {
   return validUser ? user : false;
 }
 
-export { hashPassword, checkUser, findUser };
+async function storeFile(
+  userId: number,
+  fileName: string,
+  folderId: number,
+  fileSize: number,
+  fileType: string
+): Promise<any> {
+  const file = await prisma.file.create({
+    data: {
+      authorId: userId,
+      name: fileName,
+      folderId: folderId,
+      size: fileSize,
+      type: fileType,
+    },
+  });
+
+  console.log('File stored in database:', file);
+  return file;
+}
+
+export { hashPassword, checkUser, findUser, storeFile };

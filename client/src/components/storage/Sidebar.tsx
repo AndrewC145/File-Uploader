@@ -3,6 +3,9 @@ import FolderDialog from "./FolderDialog";
 import FileDialog from "./FileDialog";
 
 function Sidebar() {
+  const PORT = import.meta.env.VITE_API_URL;
+  const action = `${PORT}/upload`;
+
   return (
     <aside className="h-screen w-[20%] bg-gray-200">
       <div className="px-4 py-2">
@@ -10,7 +13,7 @@ function Sidebar() {
           <h2 className="text-lg md:text-xl 2xl:text-2xl">Folders</h2>
           <div className="flex gap-3">
             <FolderDialog openButton={<IconButton icon={<Plus />} />} />
-            <FileDialog openButton={<IconButton icon={<FileUp />} />} />
+            <FileDialog openButton={<IconButton icon={<FileUp />} />} action={action} />
           </div>
         </div>
         <ul className="flex flex-col text-lg">

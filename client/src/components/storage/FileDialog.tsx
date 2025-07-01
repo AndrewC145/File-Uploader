@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -20,6 +21,10 @@ import {
 } from "../ui/select";
 import { Input } from "../ui/input";
 import { Label } from "@radix-ui/react-label";
+import axios from "axios";
+import { useState, useEffect } from "react";
+
+const PORT = import.meta.env.VITE_API_URL;
 
 function FileDialog({ openButton, action }: { openButton: React.ReactNode; action?: string }) {
   return (
@@ -49,7 +54,38 @@ function FileDialog({ openButton, action }: { openButton: React.ReactNode; actio
   );
 }
 
+async function uploadFile(file: File, folder: string) {
+  const formData = new FormData();
+}
+
+async function fetchFolders() {
+  try {
+    const response = await axios.get(`${PORT}/folders`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+
+    console.log(response);
+  } catch (error: any) {
+    console.error("Error fetching folders:", error);
+  }
+}
+
+function useFolders() {
+  const [folders, setFolders] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetchFolders().then((data) => setFolders(data));
+  }, []);
+
+  return folders;
+}
+
 function FolderSelect() {
+  const folders = useFolders();
+
   return (
     <Select>
       <SelectTrigger>
@@ -58,9 +94,7 @@ function FolderSelect() {
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Folders</SelectLabel>
-          <SelectItem value="folder1">Folder 1</SelectItem>
-          <SelectItem value="folder2">Folder 2</SelectItem>
-          <SelectItem value="folder3">Folder 3</SelectItem>
+          <SelectItem value="Home">Home</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

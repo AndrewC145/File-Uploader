@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { supabase } from '../db/supabaseClient';
+import { storeFile } from '../db/queries';
 import multer from 'multer';
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -28,11 +29,12 @@ async function uploadFile(req: Request, res: Response): Promise<any> {
 
 async function uploadFileToSupabase(
   file: Express.Multer.File,
-  userId: string
+  userId: string,
+  folder: string = 'Home'
 ): Promise<any> {
   const { data, error } = await supabase.storage
     .from('users')
-    .upload(`${userId}/Home`, file.buffer, {
+    .upload(`${userId}/${folder}`, file.buffer, {
       upsert: true,
       contentType: file.mimetype,
     });
