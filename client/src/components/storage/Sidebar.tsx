@@ -25,8 +25,8 @@ function Sidebar() {
         withCredentials: true,
       });
       console.log(response);
-    } catch (error: any) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.error("Error creating folder:", error);
     }
   };
