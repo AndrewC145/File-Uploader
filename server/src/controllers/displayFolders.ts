@@ -12,7 +12,9 @@ async function displayFolders(req: Request, res: Response): Promise<any> {
     const folders = await prisma.folder.findMany({
       where: { authorId: userId },
     });
-    return res.status(200).json({ folders });
+    return res
+      .status(200)
+      .json({ folders: folders.map((folder) => folder.name) });
   } catch (error: any) {
     console.error('Error fetching folders:', error);
     return res.status(500).json({ error: 'Internal server error' });

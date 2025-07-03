@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import displayFolders from '../controllers/displayFolders';
 
-const displayFoldersRoute = Router();
+const displayFoldersRoute = Router({ mergeParams: true });
 
 displayFoldersRoute.get('/', displayFolders);
 

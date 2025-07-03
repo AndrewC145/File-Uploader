@@ -83,7 +83,9 @@ function useFolders() {
   const [folders, setFolders] = useState<string[]>([]);
 
   useEffect(() => {
-    fetchFolders(user?.id).then((data) => setFolders(data || []));
+    if (user?.id) {
+      fetchFolders(user?.id).then((data) => setFolders(data));
+    }
   }, [user?.id]);
 
   return folders;
