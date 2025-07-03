@@ -94,10 +94,6 @@ function useFolders() {
 function FolderSelect() {
   const folders = useFolders();
 
-  if (folders.length === 0) {
-    return <p>No folders available</p>;
-  }
-
   return (
     <Select>
       <SelectTrigger>
