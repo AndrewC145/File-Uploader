@@ -22,7 +22,8 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "@radix-ui/react-label";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import UserContext from "@/context/userContext";
 
 const PORT = import.meta.env.VITE_API_URL;
 
@@ -54,37 +55,46 @@ function FileDialog({ openButton, action }: { openButton: React.ReactNode; actio
   );
 }
 
+/*
+
 async function uploadFile(file: File, folder: string) {
   const formData = new FormData();
 }
+*/
 
-async function fetchFolders(): Promise<any> {
+async function fetchFolders(userId: string): Promise<any> {
   try {
-    const response = await axios.get(`${PORT}/folders`, {
+    const response = await axios.get(`${PORT}/${userId}/folders`, {
       headers: {
         "Content-Type": "application/json",
       },
       withCredentials: true,
     });
 
-    console.log(response);
+    return response.data.folders || [];
   } catch (error: any) {
     console.error("Error fetching folders:", error);
+    return [];
   }
 }
 
 function useFolders() {
+  const { user } = useContext(UserContext);
   const [folders, setFolders] = useState<string[]>([]);
 
   useEffect(() => {
-    fetchFolders().then((data) => setFolders(data));
-  }, []);
+    fetchFolders(user?.id).then((data) => setFolders(data || []));
+  }, [user?.id]);
 
   return folders;
 }
 
 function FolderSelect() {
   const folders = useFolders();
+
+  if (folders.length === 0) {
+    return <p>No folders available</p>;
+  }
 
   return (
     <Select>
@@ -94,7 +104,11 @@ function FolderSelect() {
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Folders</SelectLabel>
-          <SelectItem value="Home">Home</SelectItem>
+          {folders.map((folder) => (
+            <SelectItem value={folder} key={folder}>
+              {folder}
+            </SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>

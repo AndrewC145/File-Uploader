@@ -3,30 +3,6 @@ import FormBtn from "./FormBtn";
 import FormTemplate from "./FormTemplate";
 import axios from "axios";
 import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY,
-);
-
-async function createInitialFolder(userId: string) {
-  const dummyFileName = "Home/.placeholder.txt";
-  const dummyFileContent = new Blob(["Placeholder content, safe to delete"], {
-    type: "text/plain",
-  });
-
-  const { data, error } = await supabase.storage
-    .from("users")
-    .upload(`${userId}/${dummyFileName}`, dummyFileContent);
-
-  if (error) {
-    console.error("Error creating initial folder:", error);
-    throw new Error("Failed to create initial folder");
-  } else {
-    console.log("Initial folder created successfully:", data);
-  }
-}
 
 function Register() {
   const [error, setError] = useState<string[]>([]);
@@ -50,7 +26,6 @@ function Register() {
       console.log(response);
       setSuccess(response.data.message);
       setError([]);
-      await createInitialFolder(response.data.user.id);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Error registering user:", error);

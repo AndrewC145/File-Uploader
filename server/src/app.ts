@@ -7,6 +7,7 @@ import loginRoute from './routes/loginRoute';
 import logoutRoute from './routes/logoutRoute';
 import uploadRoute from './routes/uploadRoute';
 import folderRoute from './routes/folderRoute';
+import displayFoldersRoute from './routes/displayFolderRoute';
 
 const app = express();
 const corsOptions = {
@@ -41,7 +42,8 @@ app.use('/register', registerRoute);
 app.use('/login', loginRoute);
 app.use('/logout', logoutRoute);
 app.use('/upload', uploadRoute);
-app.use('/:userId/folders', folderRoute);
+app.use('/:userId/createFolder', folderRoute);
+app.use('/:userId/folders', displayFoldersRoute);
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({

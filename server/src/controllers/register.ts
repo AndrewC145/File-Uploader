@@ -2,6 +2,33 @@ import { Request, Response } from 'express';
 import { body, Result, validationResult } from 'express-validator';
 import prisma from '../client';
 import { hashPassword, findUser } from '../db/queries';
+import { supabase } from '../db/supabaseClient';
+
+async function createInitialFolder(userId: number) {
+  const dummyFileName = 'Home/.placeholder.txt';
+  const dummyFileContent = new Blob(['Placeholder content, safe to delete'], {
+    type: 'text/plain',
+  });
+
+  const { data, error } = await supabase.storage
+    .from('users')
+    .upload(`${userId}/${dummyFileName}`, dummyFileContent);
+
+  const folder = await prisma.folder.create({
+    data: {
+      name: 'Home',
+      authorId: userId,
+    },
+  });
+
+  if (error) {
+    console.error('Error creating initial folder:', error);
+    throw new Error('Failed to create initial folder');
+  } else {
+    console.log('Initial folder created successfully:', data);
+    return folder;
+  }
+}
 
 const registerValidation = [
   body('username')
@@ -59,6 +86,9 @@ async function registerUser(req: Request, res: Response): Promise<any> {
         password: hashedPassword,
       },
     });
+
+    const folder = await createInitialFolder(user.id);
+
     return res.status(201).json({
       message: 'User created successfully',
       user,
