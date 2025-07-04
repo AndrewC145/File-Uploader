@@ -27,10 +27,27 @@ import UserContext from "@/context/userContext";
 
 const PORT = import.meta.env.VITE_API_URL;
 
-function FileDialog({ openButton, action }: { openButton: React.ReactNode; action?: string }) {
+type FileDialogProps = {
+  openButton: React.ReactNode;
+  action: string;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+};
+
+function FileDialog({ openButton, action, onSubmit }: FileDialogProps) {
+  const { user } = useContext(UserContext);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFolder, setSelectedFolder] = useState<number>(0);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+    }
+  };
+
   return (
     <Dialog>
-      <form action={action} method="POST" encType="multipart/form-data">
+      <form action={action} onSubmit={onSubmit} method="POST" encType="multipart/form-data">
         <DialogTrigger>{openButton}</DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -55,12 +72,25 @@ function FileDialog({ openButton, action }: { openButton: React.ReactNode; actio
   );
 }
 
-/*
-
-async function uploadFile(file: File, folder: string) {
+async function uploadFile(userId: string, file: File, folder: string) {
   const formData = new FormData();
+  formData.append("file", file);
+  formData.append("folderId", folder);
+
+  try {
+    const response = await axios.post(`${PORT}/${userId}/createFolder`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      withCredentials: true,
+      params: { folder },
+    });
+    console.log(response);
+  } catch (error: any) {
+    console.error("Error uploading file:", error);
+    throw new Error("Failed to upload file");
+  }
 }
-*/
 
 async function fetchFolders(userId: string): Promise<any> {
   try {
@@ -91,11 +121,11 @@ function useFolders() {
   return folders;
 }
 
-function FolderSelect() {
+function FolderSelect({ onChange }: { onChange: (value: string) => void }) {
   const folders = useFolders();
 
   return (
-    <Select>
+    <Select onValueChange={onChange}>
       <SelectTrigger>
         <SelectValue placeholder="Select a Folder" />
       </SelectTrigger>

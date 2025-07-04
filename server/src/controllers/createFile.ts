@@ -7,19 +7,31 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 async function uploadFile(req: Request, res: Response): Promise<any> {
   try {
-    const file = req.file;
+    const file: any = req.file;
     if (!file) {
       return res.status(400).json({ message: 'Please upload a file.' });
     }
 
-    const user = req.body.user;
+    const user: any = req.body.user;
 
     if (!user || !user.id) {
       return res.status(401).json({ message: 'Unauthorized. Please log in.' });
     }
 
     console.log(file);
-    await storeFile(user.id, file.originalname, file.size, file.mimetype);
+    const folderId: number = req.body.folderId;
+
+    if (!folderId) {
+      return res.status(400).json({ message: 'Folder ID is required.' });
+    }
+
+    await storeFile(
+      user.id,
+      file.originalname,
+      folderId,
+      file.size,
+      file.mimetype
+    );
     await uploadFileToSupabase(file, user.id);
     return res.status(200).json({ message: 'File uploaded successfully.' });
   } catch (error) {

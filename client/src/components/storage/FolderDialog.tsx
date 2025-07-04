@@ -14,7 +14,7 @@ import { Label } from "../ui/label";
 
 type FolderDialogProps = {
   openButton: React.ReactNode;
-  action?: string;
+  action: string;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 };
 
