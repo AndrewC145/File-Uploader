@@ -64,9 +64,9 @@ function FileDialog({ openButton, action, onSubmit }: FileDialogProps) {
 
   return (
     <Dialog>
-      <form action={action} onSubmit={onSubmit} method="POST" encType="multipart/form-data">
-        <DialogTrigger>{openButton}</DialogTrigger>
-        <DialogContent>
+      <DialogTrigger>{openButton}</DialogTrigger>
+      <DialogContent>
+        <form action={action} onSubmit={onSubmit} method="POST" encType="multipart/form-data">
           <DialogHeader>
             <DialogTitle>Upload File</DialogTitle>
             <DialogDescription>Add a new file here.</DialogDescription>
@@ -83,8 +83,8 @@ function FileDialog({ openButton, action, onSubmit }: FileDialogProps) {
             </DialogClose>
             <Button type="submit">Add</Button>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 }

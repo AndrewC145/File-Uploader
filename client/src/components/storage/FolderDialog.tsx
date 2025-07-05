@@ -21,15 +21,17 @@ type FolderDialogProps = {
 function FolderDialog({ openButton, action, onSubmit }: FolderDialogProps) {
   return (
     <Dialog>
-      <form action={action} method="POST" onSubmit={onSubmit}>
-        <DialogTrigger>{openButton}</DialogTrigger>
-        <DialogContent>
+      <DialogTrigger>{openButton}</DialogTrigger>
+      <DialogContent>
+        <form action={action} method="POST" onSubmit={onSubmit}>
           <DialogHeader>
             <DialogTitle>Create Folder</DialogTitle>
             <DialogDescription>Add a new folder here.</DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4">
-            <Label htmlFor="folderName">Folder Name</Label>
+          <div className="mb-7 grid gap-4">
+            <Label className="mt-3" htmlFor="folderName">
+              Folder Name
+            </Label>
             <Input
               id="folderName"
               name="folderName"
@@ -44,8 +46,8 @@ function FolderDialog({ openButton, action, onSubmit }: FolderDialogProps) {
             </DialogClose>
             <Button type="submit">Create</Button>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 }
