@@ -16,7 +16,6 @@ function Sidebar() {
 
   const createFolder: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    console.log("createFolder function called");
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
 
