@@ -4,12 +4,14 @@ import FileDialog from "./FileDialog";
 import { useContext } from "react";
 import UserContext from "@/context/userContext";
 import axios from "axios";
+import { useFolders } from "./FileLoader";
 
 const PORT = import.meta.env.VITE_API_URL;
 const action = `${PORT}/upload`;
 
 function Sidebar() {
   const { user } = useContext(UserContext);
+  const folders = useFolders();
   const folderAction = `${PORT}/${user?.id}/folders`;
 
   const createFolder: React.FormEventHandler<HTMLFormElement> = async (e) => {
@@ -45,16 +47,9 @@ function Sidebar() {
           </div>
         </div>
         <ul className="flex flex-col text-lg">
-          <ListItem name="Folder 1" />
-          <ListItem name="Folder 2" />
-          <ListItem name="Folder 3" />
-          <ListItem name="Folder 4" />
-          <ListItem name="Folder 5" />
-          <ListItem name="Folder 6" />
-          <ListItem name="Folder 7" />
-          <ListItem name="Folder 8" />
-          <ListItem name="Folder 9" />
-          <ListItem name="Folder 10" />
+          {folders.map((folder) => (
+            <ListItem key={folder.id} name={folder.name} />
+          ))}
         </ul>
       </div>
     </aside>
