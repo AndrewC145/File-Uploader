@@ -11,7 +11,7 @@ const action = `${PORT}/upload`;
 
 function Sidebar() {
   const { user } = useContext(UserContext);
-  const folders = useFolders();
+  const { folders, getFolders } = useFolders(user?.id);
   const folderAction = `${PORT}/${user?.id}/createFolder`;
 
   const createFolder: React.FormEventHandler<HTMLFormElement> = async (e) => {
@@ -26,7 +26,10 @@ function Sidebar() {
         },
         withCredentials: true,
       });
-      console.log(response);
+      if (response.status === 200) {
+        console.log("Folder created successfully:", response.data);
+        getFolders();
+      }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Error creating folder:", error);

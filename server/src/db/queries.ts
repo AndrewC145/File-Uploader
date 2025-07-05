@@ -55,12 +55,14 @@ async function storeFile(
 }
 
 async function storeFolder(userId: number, folderName: string): Promise<any> {
-  await prisma.folder.create({
+  const folder = await prisma.folder.create({
     data: {
       authorId: userId,
       name: folderName,
     },
   });
+
+  return folder;
 }
 
 export { hashPassword, checkUser, findUser, storeFile, storeFolder };

@@ -1,12 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { storeFolder } from '../db/queries';
 import { supabase } from '../db/supabaseClient';
 
-async function createFolder(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<any> {
+async function createFolder(req: Request, res: Response): Promise<any> {
   try {
     const folderName = req.body.folderName;
     const userId = Number(req.params.userId);
@@ -15,8 +11,13 @@ async function createFolder(
       return res.status(400).json({ message: 'User ID is required.' });
     }
 
-    await storeFolder(userId, folderName);
+    const folder = await storeFolder(userId, folderName);
     await uploadFolderToSupabase(userId, folderName);
+
+    return res.status(200).json({
+      message: 'Folder created successfully.',
+      folder,
+    });
   } catch (error: any) {
     console.error('Error creating folder:', error);
     return res.status(500).json({ message: 'Internal server error.' });
