@@ -46,7 +46,7 @@ function FileDialog({ openButton, action, onSubmit }: FileDialogProps) {
     }
   };
 
-  const handleFolderChange = (value: string) => {};
+  const handleFolderChange = (value: number) => {};
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

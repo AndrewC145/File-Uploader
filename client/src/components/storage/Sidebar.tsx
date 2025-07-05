@@ -12,10 +12,11 @@ const action = `${PORT}/upload`;
 function Sidebar() {
   const { user } = useContext(UserContext);
   const folders = useFolders();
-  const folderAction = `${PORT}/${user?.id}/folders`;
+  const folderAction = `${PORT}/${user?.id}/createFolder`;
 
   const createFolder: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    console.log("createFolder function called");
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
 
