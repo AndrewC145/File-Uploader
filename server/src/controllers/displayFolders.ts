@@ -14,7 +14,7 @@ async function displayFolders(req: Request, res: Response): Promise<any> {
     });
     return res
       .status(200)
-      .json({ folders: folders.map((folder) => folder.name) });
+      .json(folders.map((folder) => ({ name: folder.name, id: folder.id })));
   } catch (error: any) {
     console.error('Error fetching folders:', error);
     return res.status(500).json({ error: 'Internal server error' });

@@ -22,8 +22,9 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "@radix-ui/react-label";
 import axios from "axios";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import UserContext from "@/context/userContext";
+import { useFolders } from "./FileLoader";
 
 const PORT = import.meta.env.VITE_API_URL;
 
@@ -42,6 +43,22 @@ function FileDialog({ openButton, action, onSubmit }: FileDialogProps) {
     if (e.target.files) {
       const file = e.target.files[0];
       setSelectedFile(file);
+    }
+  };
+
+  const handleFolderChange = (value: string) => {};
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!user?.id || !selectedFile) {
+      console.error("User ID or file is not available");
+      return;
+    }
+
+    try {
+      await uploadFile(user.id, selectedFile, selectedFolder);
+    } catch (error: any) {
+      console.error("Error uploading file:", error);
     }
   };
 
@@ -72,10 +89,9 @@ function FileDialog({ openButton, action, onSubmit }: FileDialogProps) {
   );
 }
 
-async function uploadFile(userId: string, file: File, folder: string) {
+async function uploadFile(userId: string, file: File, folderId: number): Promise<void> {
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("folderId", folder);
 
   try {
     const response = await axios.post(`${PORT}/${userId}/createFolder`, formData, {
@@ -83,42 +99,13 @@ async function uploadFile(userId: string, file: File, folder: string) {
         "Content-Type": "multipart/form-data",
       },
       withCredentials: true,
-      params: { folder },
+      params: { folderId: folderId },
     });
     console.log(response);
   } catch (error: any) {
     console.error("Error uploading file:", error);
     throw new Error("Failed to upload file");
   }
-}
-
-async function fetchFolders(userId: string): Promise<any> {
-  try {
-    const response = await axios.get(`${PORT}/${userId}/folders`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    });
-
-    return response.data.folders || [];
-  } catch (error: any) {
-    console.error("Error fetching folders:", error);
-    return [];
-  }
-}
-
-function useFolders() {
-  const { user } = useContext(UserContext);
-  const [folders, setFolders] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (user?.id) {
-      fetchFolders(user?.id).then((data) => setFolders(data));
-    }
-  }, [user?.id]);
-
-  return folders;
 }
 
 function FolderSelect({ onChange }: { onChange: (value: string) => void }) {
@@ -133,8 +120,8 @@ function FolderSelect({ onChange }: { onChange: (value: string) => void }) {
         <SelectGroup>
           <SelectLabel>Folders</SelectLabel>
           {folders.map((folder) => (
-            <SelectItem value={folder} key={folder}>
-              {folder}
+            <SelectItem value={folder.name} key={folder.id}>
+              {folder.name}
             </SelectItem>
           ))}
         </SelectGroup>
