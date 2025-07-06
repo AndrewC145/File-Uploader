@@ -1,7 +1,15 @@
-import { Plus, FileUp } from "lucide-react";
+import { Plus, FileUp, Ellipsis } from "lucide-react";
 import FolderDialog from "./FolderDialog";
 import FileDialog from "./FileDialog";
-import { useContext } from "react";
+import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { useState, useContext } from "react";
 import UserContext from "@/context/userContext";
 import axios from "axios";
 import { useFolders } from "./FileLoader";
@@ -16,8 +24,8 @@ function Sidebar() {
 
   const createFolder: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
+    const formData: FormData = new FormData(e.currentTarget);
+    const data: object = Object.fromEntries(formData.entries());
 
     try {
       const response = await axios.post(folderAction, JSON.stringify(data), {
@@ -60,7 +68,26 @@ function Sidebar() {
 }
 
 function ListItem({ name }: { name: string }) {
-  return <li className="cursor-pointer rounded-lg p-2 hover:bg-gray-100">{name}</li>;
+  const [open, setOpen] = useState<boolean>(false);
+  return (
+    <div className="flex items-center justify-between">
+      <li className="flex w-full cursor-pointer items-center justify-between rounded-lg p-2 hover:bg-gray-100">
+        {name}
+      </li>
+      <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="cursor-pointer" size="icon">
+            <Ellipsis />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-[80px]">
+          <DropdownMenuGroup>
+            <DropdownMenuItem className="cursor-pointer text-red-600">Delete</DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
 }
 
 function IconButton({ icon }: { icon: React.ReactNode }) {
