@@ -1,26 +1,21 @@
-import { Plus, FileUp, Ellipsis } from "lucide-react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Plus, FileUp } from "lucide-react";
 import FolderDialog from "./FolderDialog";
 import FileDialog from "./FileDialog";
-import { Button } from "../ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import UserContext from "@/context/userContext";
 import axios from "axios";
 import { useFolders } from "./FileLoader";
+import ListItem from "./ListItem";
 
 const PORT = import.meta.env.VITE_API_URL;
 const action = `${PORT}/upload`;
 
 function Sidebar() {
   const { user } = useContext(UserContext);
-  const { folders, getFolders } = useFolders(user?.id);
-  const folderAction = `${PORT}/${user?.id}/createFolder`;
+  const userId = user?.id;
+  const { folders, getFolders } = useFolders(userId);
+  const folderAction = `${PORT}/${userId}/createFolder`;
 
   const createFolder: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -38,7 +33,6 @@ function Sidebar() {
         console.log("Folder created successfully:", response.data);
         getFolders();
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Error creating folder:", error);
     }
@@ -59,34 +53,11 @@ function Sidebar() {
         </div>
         <ul className="flex flex-col text-lg">
           {folders.map((folder) => (
-            <ListItem key={folder.id} name={folder.name} />
+            <ListItem key={folder.id} name={folder.name} folderId={folder.id} userId={userId} />
           ))}
         </ul>
       </div>
     </aside>
-  );
-}
-
-function ListItem({ name }: { name: string }) {
-  const [open, setOpen] = useState<boolean>(false);
-  return (
-    <div className="flex items-center justify-between">
-      <li className="flex w-full cursor-pointer items-center justify-between rounded-lg p-2 hover:bg-gray-100">
-        {name}
-      </li>
-      <DropdownMenu open={open} onOpenChange={setOpen}>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="cursor-pointer" size="icon">
-            <Ellipsis />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-[80px]">
-          <DropdownMenuGroup>
-            <DropdownMenuItem className="cursor-pointer text-red-600">Delete</DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
   );
 }
 

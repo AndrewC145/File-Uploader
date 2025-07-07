@@ -65,4 +65,22 @@ async function storeFolder(userId: number, folderName: string): Promise<any> {
   return folder;
 }
 
-export { hashPassword, checkUser, findUser, storeFile, storeFolder };
+async function deleteFolderFromDB(folderId: number): Promise<any> {
+  const folder = await prisma.folder.delete({
+    where: {
+      id: folderId,
+    },
+  });
+
+  console.log('Folder deleted:', folder);
+  return folder;
+}
+
+export {
+  hashPassword,
+  checkUser,
+  findUser,
+  storeFile,
+  storeFolder,
+  deleteFolderFromDB,
+};
