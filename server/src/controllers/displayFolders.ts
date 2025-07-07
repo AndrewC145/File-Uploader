@@ -2,7 +2,7 @@ import prisma from '../client';
 import { Request, Response } from 'express';
 
 async function displayFolders(req: Request, res: Response): Promise<any> {
-  const userId = Number(req.params.userId);
+  const userId: number = Number(req.params.userId);
 
   if (!userId) {
     return res.status(400).json({ error: 'User ID is required' });

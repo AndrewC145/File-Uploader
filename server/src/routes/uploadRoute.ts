@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { uploadFile, upload } from '../controllers/createFile';
 
-const uploadRoute = Router();
+const uploadRoute: Router = Router();
 
 uploadRoute.post('/', upload.single('fileName'), uploadFile);
 

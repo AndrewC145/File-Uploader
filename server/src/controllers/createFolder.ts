@@ -1,17 +1,18 @@
 import { Request, Response } from 'express';
 import { storeFolder } from '../db/queries';
 import { supabase } from '../db/supabaseClient';
+import { Folder } from '../../generated/prisma';
 
 async function createFolder(req: Request, res: Response): Promise<any> {
   try {
-    const folderName = req.body.folderName;
-    const userId = Number(req.params.userId);
+    const folderName: string = req.body.folderName;
+    const userId: number = Number(req.params.userId);
 
     if (!userId) {
       return res.status(400).json({ message: 'User ID is required.' });
     }
 
-    const folder = await storeFolder(userId, folderName);
+    const folder: Folder = await storeFolder(userId, folderName);
     await uploadFolderToSupabase(userId, folderName);
 
     return res.status(200).json({
@@ -28,10 +29,13 @@ async function uploadFolderToSupabase(
   userId: number,
   folderName: string
 ): Promise<any> {
-  const dummyFileName = '/.placeholder.txt';
-  const dummyFileContent = new Blob(['Placeholder content, safe to delete'], {
-    type: 'text/plain',
-  });
+  const dummyFileName: string = '/.placeholder.txt';
+  const dummyFileContent: Blob = new Blob(
+    ['Placeholder content, safe to delete'],
+    {
+      type: 'text/plain',
+    }
+  );
 
   const { data, error } = await supabase.storage
     .from('users')

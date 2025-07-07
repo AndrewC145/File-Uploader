@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { registerValidation, registerUser } from '../controllers/register';
 
-const registerRoute = Router();
+const registerRoute: Router = Router();
 
 registerRoute.post('/', ...registerValidation, registerUser);
 

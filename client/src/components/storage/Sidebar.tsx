@@ -8,12 +8,12 @@ import axios from "axios";
 import { useFolders } from "./FileLoader";
 import ListItem from "./ListItem";
 
-const PORT = import.meta.env.VITE_API_URL;
-const action = `${PORT}/upload`;
+const PORT: string = import.meta.env.VITE_API_URL;
+const action: string = `${PORT}/upload`;
 
 function Sidebar() {
   const { user } = useContext(UserContext);
-  const userId = user?.id;
+  const userId: string = user?.id;
   const { folders, getFolders } = useFolders(userId);
   const folderAction = `${PORT}/${userId}/createFolder`;
 

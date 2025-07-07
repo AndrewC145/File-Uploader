@@ -4,6 +4,7 @@ import { body, Result, validationResult } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
 import prisma from '../client';
 import { checkUser } from '../db/queries';
+import { Users } from '../../generated/prisma';
 
 const loginValidation = [
   body('username')
@@ -45,7 +46,7 @@ passport.use(
   ) {
     await prisma.$connect();
     try {
-      const user = await checkUser(username, password);
+      const user: Users = await checkUser(username, password);
       if (!user) {
         await prisma.$disconnect();
         return cb(null, false, { message: 'Incorrect username or password' });
@@ -68,7 +69,7 @@ passport.serializeUser(function (user: any, cb: Function) {
 
 passport.deserializeUser(async function (user: any, cb: Function) {
   try {
-    const userData = await prisma.users.findUnique({
+    const userData: any = await prisma.users.findUnique({
       where: { id: user.id },
     });
 
@@ -88,7 +89,7 @@ async function loginUser(
   const errors: Result = validationResult(req);
 
   if (!errors.isEmpty()) {
-    const errorMessages = errors.array().map((err) => err.msg);
+    const errorMessages: string[] = errors.array().map((err) => err.msg);
     return res.status(400).json({ error: errorMessages });
   }
 

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import logout from '../controllers/logout';
-const logoutRoute = Router();
+const logoutRoute: Router = Router();
 
 logoutRoute.post('/', logout);
 

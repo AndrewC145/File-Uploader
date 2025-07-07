@@ -8,13 +8,13 @@ function Register() {
   const [error, setError] = useState<string[]>([]);
   const [success, setSuccess] = useState<string>("");
 
-  const PORT = import.meta.env.VITE_API_URL;
-  const action = `${PORT}/register`;
+  const PORT: string = import.meta.env.VITE_API_URL;
+  const action: string = `${PORT}/register`;
 
   const handleRegister: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
+    const formData: FormData = new FormData(e.currentTarget);
+    const data: object = Object.fromEntries(formData.entries());
 
     try {
       const response = await axios.post(action, JSON.stringify(data), {
