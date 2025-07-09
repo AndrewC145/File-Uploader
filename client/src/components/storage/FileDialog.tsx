@@ -31,10 +31,9 @@ const PORT = import.meta.env.VITE_API_URL;
 type FileDialogProps = {
   openButton: React.ReactNode;
   action: string;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 };
 
-function FileDialog({ openButton, action, onSubmit }: FileDialogProps) {
+function FileDialog({ openButton, action }: FileDialogProps) {
   const { user } = useContext(UserContext);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedFolder, setSelectedFolder] = useState<number>(0);
@@ -46,7 +45,9 @@ function FileDialog({ openButton, action, onSubmit }: FileDialogProps) {
     }
   };
 
-  const handleFolderChange = (value: number) => {};
+  const handleFolderChange = (id: string) => {
+    setSelectedFolder(Number(id));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -66,16 +67,16 @@ function FileDialog({ openButton, action, onSubmit }: FileDialogProps) {
     <Dialog>
       <DialogTrigger>{openButton}</DialogTrigger>
       <DialogContent>
-        <form action={action} onSubmit={onSubmit} method="POST" encType="multipart/form-data">
+        <form action={action} onSubmit={handleSubmit} method="POST" encType="multipart/form-data">
           <DialogHeader>
             <DialogTitle>Upload File</DialogTitle>
             <DialogDescription>Add a new file here.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4">
             <Label htmlFor="fileName">File Name</Label>
-            <Input id="fileName" name="fileName" type="file" />
+            <Input onChange={handleFileChange} id="fileName" name="fileName" type="file" />
             <Label htmlFor="folderSelect">Select Folder</Label>
-            <FolderSelect />
+            <FolderSelect userId={user.id} onChange={handleFolderChange} />
           </div>
           <DialogFooter>
             <DialogClose asChild>
@@ -91,15 +92,16 @@ function FileDialog({ openButton, action, onSubmit }: FileDialogProps) {
 
 async function uploadFile(userId: string, file: File, folderId: number): Promise<void> {
   const formData = new FormData();
-  formData.append("file", file);
+  formData.append("fileName", file);
+  formData.append("userId", userId);
+  formData.append("folderId", folderId.toString());
 
   try {
-    const response = await axios.post(`${PORT}/${userId}/createFolder`, formData, {
+    const response = await axios.post(`${PORT}/upload`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
       withCredentials: true,
-      params: { folderId: folderId },
     });
     console.log(response);
   } catch (error: any) {
@@ -108,8 +110,8 @@ async function uploadFile(userId: string, file: File, folderId: number): Promise
   }
 }
 
-function FolderSelect({ onChange }: { onChange: (value: string) => void }) {
-  const folders = useFolders();
+function FolderSelect({ onChange, userId }: { onChange: (value: string) => void; userId: string }) {
+  const { folders } = useFolders(userId);
 
   return (
     <Select onValueChange={onChange}>
@@ -120,7 +122,7 @@ function FolderSelect({ onChange }: { onChange: (value: string) => void }) {
         <SelectGroup>
           <SelectLabel>Folders</SelectLabel>
           {folders.map((folder) => (
-            <SelectItem value={folder.name} key={folder.id}>
+            <SelectItem value={folder.id.toString()} key={folder.id}>
               {folder.name}
             </SelectItem>
           ))}
