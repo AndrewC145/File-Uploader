@@ -9,6 +9,7 @@ import uploadRoute from './routes/uploadRoute';
 import folderRoute from './routes/folderRoute';
 import displayFoldersRoute from './routes/displayFolderRoute';
 import deleteFolderRoute from './routes/deleteFolderRoute';
+import displayFilesRoute from './routes/displayFilesRoute';
 
 const app = express();
 const corsOptions = {
@@ -46,6 +47,7 @@ app.use('/upload', uploadRoute);
 app.use('/:userId/createFolder', folderRoute);
 app.use('/:userId/folders', displayFoldersRoute);
 app.use('/deleteFolder', deleteFolderRoute);
+app.use('/displayFiles', displayFilesRoute);
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({

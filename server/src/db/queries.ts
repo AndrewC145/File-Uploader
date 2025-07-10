@@ -76,6 +76,16 @@ async function deleteFolderFromDB(folderId: number): Promise<any> {
   return folder;
 }
 
+async function fetchFilesFromDB(folderId: number): Promise<any> {
+  const files = await prisma.file.findMany({
+    where: {
+      folderId: folderId,
+    },
+  });
+
+  return files;
+}
+
 export {
   hashPassword,
   checkUser,
@@ -83,4 +93,5 @@ export {
   storeFile,
   storeFolder,
   deleteFolderFromDB,
+  fetchFilesFromDB,
 };
