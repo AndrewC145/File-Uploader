@@ -26,13 +26,9 @@ async function uploadFile(req: Request, res: Response): Promise<any> {
       return res.status(400).json({ message: 'Folder ID is required.' });
     }
 
-    await storeFile(
-      user,
-      file.originalname,
-      folderId,
-      file.size,
-      file.mimetype
-    );
+    let cleanName = cleanFileName(file.originalname);
+
+    await storeFile(user, cleanName, folderId, file.size, file.mimetype);
     await uploadFileToSupabase(file, user);
     return res.status(200).json({ message: 'File uploaded successfully.' });
   } catch (error) {
@@ -46,10 +42,14 @@ async function uploadFileToSupabase(
   userId: number,
   folder: string = 'Home'
 ): Promise<any> {
+  const fileName = file.originalname;
+
+  let cleanName = cleanFileName(fileName);
+
   const { data, error } = await supabase.storage
     .from('users')
-    .upload(`${userId}/${folder}`, file.buffer, {
-      upsert: true,
+    .upload(`${userId}/${folder}/${cleanName}`, file.buffer, {
+      upsert: false,
       contentType: file.mimetype,
     });
 
@@ -59,6 +59,23 @@ async function uploadFileToSupabase(
   }
   console.log('File uploaded to Supabase:', data);
   return data;
+}
+
+function cleanFileName(fileName: string): string {
+  let clean = fileName;
+  if (!isValidKey(fileName)) {
+    clean = replaceInvalidChar(fileName);
+  }
+
+  return clean;
+}
+
+function isValidKey(key: string): boolean {
+  return /^(\w|\/|!|-|\.|\*|'|\(|\)| |&|\$|@|=|;|:|\+|,|\?)*$/.test(key);
+}
+
+function replaceInvalidChar(name: string): string {
+  return name.replace(/[^\w\/!-.\*'()\s&\$@=;:\+,?]/g, '');
 }
 
 export { uploadFile, upload };
