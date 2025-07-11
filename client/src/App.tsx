@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router";
+import { BrowserRouter, Routes, Route, useLocation, useParams } from "react-router";
 import Header from "./components/home/Header";
 import Home from "./components/home/Home";
 import Register from "./components/forms/Register";
@@ -37,6 +37,7 @@ function AppContext() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/storage" element={<Storage />} />
+          <Route path="/storage/:folderId" element={<Storage />} />
         </Routes>
       </UserProvider>
     </>

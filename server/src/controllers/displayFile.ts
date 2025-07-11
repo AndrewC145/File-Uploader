@@ -4,9 +4,9 @@ import { fetchFilesFromDB } from '../db/queries';
 
 async function displayFiles(req: Request, res: Response): Promise<any> {
   try {
-    const folderId: number = Number(req.body.folderId);
-    const folderName: string = req.body.folderName;
-    const id: number = Number(req.body.userId);
+    const folderId: number = Number(req.params.folderId);
+    const folderName: string = req.params.folderName;
+    const id: number = Number(req.params.userId);
 
     if (!folderId) {
       return res.status(400).json({ message: 'Folder ID is required.' });
@@ -37,6 +37,7 @@ async function getFilesFromSupabase(
     throw new Error('Failed to fetch files from Supabase');
   } else {
     console.log('Files fetched from Supabase:', data);
+    return data;
   }
 }
 

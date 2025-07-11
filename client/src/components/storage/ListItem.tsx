@@ -11,10 +11,21 @@ import {
 } from "../ui/dropdown-menu";
 import axios from "axios";
 import { useFolders } from "./FileLoader";
+import { useNavigate } from "react-router";
 
 function ListItem({ name, folderId, userId }: { name: string; folderId: number; userId: string }) {
   const [open, setOpen] = useState<boolean>(false);
   const { getFolders } = useFolders(userId);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/folder/${userId}/${folderId}/${name}`, {
+      state: {
+        folderId: folderId,
+        folderName: name,
+      },
+    });
+  };
 
   const handleDelete = async () => {
     try {
@@ -38,7 +49,7 @@ function ListItem({ name, folderId, userId }: { name: string; folderId: number; 
     }
   };
   return (
-    <div className="flex items-center justify-between">
+    <div onClick={handleClick} className="flex items-center justify-between">
       <li className="flex w-full cursor-pointer items-center justify-between rounded-lg p-2 hover:bg-gray-100">
         {name}
       </li>

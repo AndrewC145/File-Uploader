@@ -47,7 +47,7 @@ app.use('/upload', uploadRoute);
 app.use('/:userId/createFolder', folderRoute);
 app.use('/:userId/folders', displayFoldersRoute);
 app.use('/deleteFolder', deleteFolderRoute);
-app.use('/displayFiles', displayFilesRoute);
+app.use('/:userId/:folderId/:folderName/displayFiles', displayFilesRoute);
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
