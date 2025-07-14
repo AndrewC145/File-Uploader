@@ -114,7 +114,6 @@ async function loginUser(
           return res.status(200).json({
             message: `Login successful, Hi ${user.username}`,
             user,
-            homeFolderId: homeFolder.id,
           });
         } catch (err) {
           console.error('Error fetching home folder:', err);
