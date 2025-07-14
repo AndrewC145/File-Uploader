@@ -3,7 +3,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { body, Result, validationResult } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
 import prisma from '../client';
-import { checkUser } from '../db/queries';
+import { checkUser, fetchHomeFolder } from '../db/queries';
 import { Users } from '../../generated/prisma';
 
 const loginValidation = [
@@ -103,14 +103,23 @@ async function loginUser(
     }
 
     if (user) {
-      req.login(user, (loginErr) => {
+      req.login(user, async (loginErr) => {
         if (loginErr) {
           return next(loginErr);
         }
 
-        return res
-          .status(200)
-          .json({ message: `Login successful! Hi ${user.username}.`, user });
+        try {
+          const homeFolder = await fetchHomeFolder(user.id);
+          req.session.homeFolderId = homeFolder.id;
+          return res.status(200).json({
+            message: `Login successful, Hi ${user.username}`,
+            user,
+            homeFolderId: homeFolder.id,
+          });
+        } catch (err) {
+          console.error('Error fetching home folder:', err);
+          return res.status(500).json({ error: 'Internal server error' });
+        }
       });
     }
   })(req, res, next);

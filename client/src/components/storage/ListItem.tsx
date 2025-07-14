@@ -19,7 +19,7 @@ function ListItem({ name, folderId, userId }: { name: string; folderId: number; 
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/folder/${userId}/${folderId}/${name}`, {
+    navigate(`/storage/${userId}/${folderId}/${name}`, {
       state: {
         folderId: folderId,
         folderName: name,

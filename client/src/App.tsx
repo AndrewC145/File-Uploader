@@ -37,7 +37,7 @@ function AppContext() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/storage" element={<Storage />} />
-          <Route path="/storage/:folderId" element={<Storage />} />
+          <Route path="/storage/:userId/:folderId:/folderName" element={<Storage />} />
         </Routes>
       </UserProvider>
     </>

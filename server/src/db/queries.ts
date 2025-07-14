@@ -86,6 +86,30 @@ async function fetchFilesFromDB(folderId: number): Promise<any> {
   return files;
 }
 
+async function fetchHomeFolder(userId: number): Promise<any> {
+  const homeFolder = await prisma.folder.findFirst({
+    where: {
+      authorId: userId,
+      name: 'Home',
+    },
+  });
+
+  console.log('Home folder fetched:', homeFolder);
+  return homeFolder;
+}
+
+async function fetchHomeFiles(userId: number, folderId: number): Promise<any> {
+  const files = await prisma.file.findMany({
+    where: {
+      authorId: userId,
+      folderId: folderId,
+    },
+  });
+
+  console.log('Home files fetched:', files);
+  return files;
+}
+
 export {
   hashPassword,
   checkUser,
@@ -94,4 +118,6 @@ export {
   storeFolder,
   deleteFolderFromDB,
   fetchFilesFromDB,
+  fetchHomeFolder,
+  fetchHomeFiles,
 };
