@@ -5,3 +5,13 @@ declare module 'express-session' {
     homeFolderId: number;
   }
 }
+
+declare global {
+  namespace Express {
+    interface User {
+      id: number;
+    }
+  }
+}
+
+Express.User;

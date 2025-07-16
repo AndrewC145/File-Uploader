@@ -35,21 +35,6 @@ function Folder() {
     fetchFiles();
   }, [fetchFiles]);
 
-  const fetchInitialFiles = useCallback(async () => {
-    try {
-      const response = await axios.get(`${PORT}/${user?.id}/${folderId}/Home/displayFiles`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
-      console.log(response);
-    } catch (error: any) {
-      console.error("Error fetching initial files:", error);
-    }
-  }, [PORT, folderId, user?.id]);
-
-  useEffect(() => {});
   return <FileHeader />;
 }
 

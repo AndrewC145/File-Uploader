@@ -31,14 +31,35 @@ async function getFilesFromSupabase(
   const { data, error } = await supabase.storage
     .from('users')
     .list(`${userId}/${folder}`);
-
   if (error) {
     console.error('Error fetching files from Supabase:', error);
     throw new Error('Failed to fetch files from Supabase');
   } else {
-    console.log('Files fetched from Supabase:', data);
     return data;
   }
 }
 
-export default displayFiles;
+async function displayHomeFiles(req: Request, res: Response): Promise<any> {
+  try {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: 'User not authenticated.' });
+    }
+    const userId: number = Number(req.query.userId);
+
+    if (req.user.id !== userId) {
+      return res.status(403).json({ message: 'Unauthorized access.' });
+    }
+
+    const homeFiles = await getFilesFromSupabase(userId, 'Home');
+    console.log('Home files:', homeFiles);
+    return res.status(200).json({
+      message: 'Home files fetched successfully.',
+      homeFiles: homeFiles,
+    });
+  } catch (error: any) {
+    console.error('Error fetching home files:', error);
+    return res.status(500).json({ message: 'Failed to fetch home files' });
+  }
+}
+
+export default { displayFiles, displayHomeFiles };

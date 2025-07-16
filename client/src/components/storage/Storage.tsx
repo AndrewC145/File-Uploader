@@ -1,10 +1,13 @@
 import Sidebar from "./Sidebar";
 import Folder from "./Folder";
+import FolderHome from "./FolderHome";
+import FileHeader from "./FileHeader";
 import { useContext } from "react";
 import UserContext from "@/context/userContext";
 
 function Storage() {
   const { user } = useContext(UserContext);
+  const url = window.location.pathname;
 
   if (!user) {
     return (
@@ -13,6 +16,19 @@ function Storage() {
       </div>
     );
   }
+
+  if (url === "/storage" && user) {
+    return (
+      <div className="flex font-nunito">
+        <Sidebar />
+        <div className="flex w-full flex-col">
+          <FileHeader />
+          <FolderHome />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex font-nunito">
       <Sidebar />
