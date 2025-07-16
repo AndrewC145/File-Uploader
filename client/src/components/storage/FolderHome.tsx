@@ -20,6 +20,7 @@ function FolderHome() {
         withCredentials: true,
       });
       console.log(response);
+      setFiles(response.data.homeFiles);
     } catch (error: any) {
       console.error("Error fetching home files:", error);
       throw new Error("Failed to fetch home files");
@@ -30,7 +31,23 @@ function FolderHome() {
     fetchHomeFiles();
   }, [fetchHomeFiles]);
 
-  return <></>;
+  return (
+    <>
+      {files.map((file) => {
+        return (
+          <div
+            key={file.id}
+            className="flex items-center justify-between px-3 py-2 hover:bg-gray-100 md:px-5 xl:px-7"
+          >
+            <h3 className="flex-[2]">{file.name}</h3>
+            <p className="flex-1">{file.metadata.mimetype}</p>
+            <p className="flex-1">{file.metadata.size} bytes</p>
+            <p className="flex-1">{new Date(file.metadata.lastModified).toLocaleDateString()}</p>
+          </div>
+        );
+      })}
+    </>
+  );
 }
 
 export default FolderHome;
