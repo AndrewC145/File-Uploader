@@ -2,7 +2,7 @@
 import { Ellipsis } from "lucide-react";
 import DropDown from "./Dropdown";
 import axios from "axios";
-import { useFolders } from "./FileLoader";
+import { useFolders } from "./FolderLoader";
 import { useNavigate } from "react-router";
 
 function ListItem({ name, folderId, userId }: { name: string; folderId: number; userId: string }) {

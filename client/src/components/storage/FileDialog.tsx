@@ -24,7 +24,7 @@ import { Label } from "@radix-ui/react-label";
 import axios from "axios";
 import { useState, useContext } from "react";
 import UserContext from "@/context/userContext";
-import { useFolders } from "./FileLoader";
+import { useFolders } from "./FolderLoader";
 
 const PORT = import.meta.env.VITE_API_URL;
 

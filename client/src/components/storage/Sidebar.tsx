@@ -5,7 +5,7 @@ import FileDialog from "./FileDialog";
 import { useContext } from "react";
 import UserContext from "@/context/userContext";
 import axios from "axios";
-import { useFolders } from "./FileLoader";
+import { useFolders } from "./FolderLoader";
 import ListItem from "./ListItem";
 
 const PORT: string = import.meta.env.VITE_API_URL;
