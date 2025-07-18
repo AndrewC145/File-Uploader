@@ -55,7 +55,7 @@ async function uploadFileToSupabase(
 
   if (error) {
     console.error('Error uploading file to Supabase:', error);
-    throw new Error('Failed to upload file to Supabase');
+    throw new Error(error.message);
   }
   console.log('File uploaded to Supabase:', data);
   return data;

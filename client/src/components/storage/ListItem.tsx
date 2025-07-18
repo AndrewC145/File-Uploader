@@ -1,20 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
 import { Ellipsis } from "lucide-react";
-import { Button } from "../ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+import DropDown from "./Dropdown";
 import axios from "axios";
 import { useFolders } from "./FileLoader";
 import { useNavigate } from "react-router";
 
 function ListItem({ name, folderId, userId }: { name: string; folderId: number; userId: string }) {
-  const [open, setOpen] = useState<boolean>(false);
   const { getFolders } = useFolders(userId);
   const navigate = useNavigate();
 
@@ -53,20 +44,7 @@ function ListItem({ name, folderId, userId }: { name: string; folderId: number; 
       <li className="flex w-full cursor-pointer items-center justify-between rounded-lg p-2 hover:bg-gray-100">
         {name}
       </li>
-      <DropdownMenu open={open} onOpenChange={setOpen}>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="cursor-pointer" size="icon">
-            <Ellipsis />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-[80px]">
-          <DropdownMenuGroup>
-            <DropdownMenuItem onClick={handleDelete} className="cursor-pointer text-red-600">
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <DropDown icon={<Ellipsis />} onFunctionClick={handleDelete} />
     </div>
   );
 }
