@@ -67,6 +67,10 @@ function cleanFileName(fileName: string): string {
     clean = replaceInvalidChar(fileName);
   }
 
+  if (fileName.length > 45) {
+    clean = fileName.slice(0, 45);
+  }
+
   return clean;
 }
 

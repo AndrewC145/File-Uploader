@@ -10,17 +10,21 @@ async function deleteFolder(req: Request, res: Response): Promise<any> {
     return;
   }
   await deleteFolderFromDB(folderId);
-  await deleteFolderFromSupabase(userId, folderName);
+  const deletedSupabaseFiles = await deleteFolderFromSupabase(
+    userId,
+    folderName
+  );
 
   return res.status(200).json({
     message: 'Folder deleted successfully',
+    deletedSupabaseFiles,
   });
 }
 
 async function deleteFolderFromSupabase(
   userId: number,
   folderName: string
-): Promise<void> {
+): Promise<any> {
   const { data, error } = await supabase.storage
     .from('users')
     .list(`${userId}/${folderName}`);
@@ -38,6 +42,8 @@ async function deleteFolderFromSupabase(
     (file) => `${userId}/${folderName}/${file.name}`
   );
 
+  console.log('Files to delete:', filesToDelete);
+
   const { data: list, error: deleteError } = await supabase.storage
     .from('users')
     .remove(filesToDelete);
@@ -46,7 +52,7 @@ async function deleteFolderFromSupabase(
     console.error('Error deleting files from Supabase:', deleteError);
     throw new Error('Failed to delete files from Supabase');
   } else {
-    console.log('Files deleted from Supabase:', list);
+    return list;
   }
 }
 

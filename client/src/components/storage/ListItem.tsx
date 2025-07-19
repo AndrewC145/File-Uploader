@@ -30,7 +30,6 @@ function ListItem({ name, folderId, userId }: { name: string; folderId: number; 
           folderId: folderId,
         },
       });
-      console.log(response);
       if (response.status === 200) {
         console.log("Folder deleted successfully:", response.data);
         getFolders();
