@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { memo } from "react";
 import DropDown from "./Dropdown";
 import { EllipsisVertical } from "lucide-react";
 
-function File({ files }: { files?: any[] }) {
+const File = memo(function File({ files }: { files: any[] }) {
   if (!files || files.length === 0) {
     return <p className="py-4 text-center text-gray-500">No files found.</p>;
   }
@@ -24,6 +25,6 @@ function File({ files }: { files?: any[] }) {
       })}
     </>
   );
-}
+});
 
 export default File;

@@ -1,6 +1,6 @@
-import easyCloud from "../assets/images/easy-cloud.jpg";
-import serverImg from "../assets/images/server.jpg";
-import computerImg from "../assets/images/computer.jpg";
+import easyCloud from "../../assets/images/easy-cloud.jpg";
+import serverImg from "../../assets/images/server.jpg";
+import computerImg from "../../assets/images/computer.jpg";
 
 type FeatureCardProps = {
   title: string;
