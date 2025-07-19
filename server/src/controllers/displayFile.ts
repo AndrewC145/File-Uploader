@@ -17,7 +17,7 @@ async function displayFiles(req: Request, res: Response): Promise<any> {
 
     return res
       .status(200)
-      .json({ message: 'Files fetched successfully.', files, storageFiles });
+      .json({ message: 'Files fetched successfully.', storageFiles });
   } catch (error: any) {
     console.error('Error fetching files:', error);
     return res.status(500).json({ message: 'Internal server error.' });

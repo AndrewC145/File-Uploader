@@ -23,12 +23,12 @@ function Folder() {
           withCredentials: true,
         },
       );
-      console.log(response);
+      setFiles(response.data.storageFiles);
     } catch (error: any) {
       console.error("Error fetching files:", error);
       throw new Error("Failed to fetch files");
     }
-  }, [PORT, folderId, folderName, user?.id]);
+  }, [PORT, folderId, folderName, user?.id, setFiles]);
 
   useEffect(() => {
     fetchFiles();
