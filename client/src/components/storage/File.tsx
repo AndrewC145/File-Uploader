@@ -4,7 +4,7 @@ import { EllipsisVertical } from "lucide-react";
 
 function File({ files }: { files?: any[] }) {
   if (!files || files.length === 0) {
-    return <p className="text-center text-gray-500">No files found.</p>;
+    return <p className="py-4 text-center text-gray-500">No files found.</p>;
   }
   return (
     <>
