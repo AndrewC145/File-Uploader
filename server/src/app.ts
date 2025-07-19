@@ -49,7 +49,7 @@ app.use('/:userId/createFolder', folderRoute);
 app.use('/:userId/folders', displayFoldersRoute);
 app.use('/deleteFolder', deleteFolderRoute);
 app.use('/storage', homeRouter);
-app.use('/:userId/:folderId/:folderName/displayFiles', displayFilesRoute);
+app.use('/', displayFilesRoute);
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
