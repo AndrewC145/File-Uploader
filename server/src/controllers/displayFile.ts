@@ -51,7 +51,6 @@ async function displayHomeFiles(req: Request, res: Response): Promise<any> {
     }
 
     const homeFiles = await getFilesFromSupabase(userId, 'Home');
-    console.log('Home files:', homeFiles);
     return res.status(200).json({
       message: 'Home files fetched successfully.',
       homeFiles: homeFiles,
