@@ -1,13 +1,10 @@
 import Hero from "./Hero";
 import Features from "./Features";
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import UserContext from "@/context/userContext";
 
 function Home() {
-  const { user, loading } = useContext(UserContext);
-  useEffect(() => {
-    console.log("User context updated:", user);
-  }, [user]);
+  const { loading } = useContext(UserContext);
 
   if (loading) {
     return (

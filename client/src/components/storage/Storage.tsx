@@ -17,24 +17,12 @@ function Storage() {
     );
   }
 
-  if (url === "/storage" && user) {
-    return (
-      <div className="flex font-nunito">
-        <Sidebar />
-        <div className="flex w-full flex-col">
-          <FileHeader />
-          <FolderHome />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex font-nunito">
       <Sidebar />
       <div className="flex w-full flex-col">
         <FileHeader />
-        <Folder />
+        {url === "/storage" && user ? <FolderHome /> : <Folder />}
       </div>
     </div>
   );
