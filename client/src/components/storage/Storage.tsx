@@ -33,6 +33,7 @@ function Storage() {
     <div className="flex font-nunito">
       <Sidebar />
       <div className="flex w-full flex-col">
+        <FileHeader />
         <Folder />
       </div>
     </div>

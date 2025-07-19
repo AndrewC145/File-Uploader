@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, useContext, useCallback } from "react";
-import FileHeader from "./FileHeader";
+import { useEffect, useContext, useCallback } from "react";
 import axios from "axios";
 import UserContext from "@/context/userContext";
 import { useLocation, type Location } from "react-router";
+import File from "./File";
 
 function Folder() {
-  const { user } = useContext(UserContext);
-  const [files, setFiles] = useState<any[]>([]);
+  const { user, files, setFiles } = useContext(UserContext);
   const location: Location = useLocation();
   const folderId: number = location.state?.folderId;
   const folderName: string = location.state?.folderName;
@@ -33,9 +32,13 @@ function Folder() {
 
   useEffect(() => {
     fetchFiles();
-  }, [fetchFiles]);
 
-  return <FileHeader />;
+    return () => {
+      setFiles([]);
+    };
+  }, [fetchFiles, setFiles]);
+
+  return <File files={files} />;
 }
 
 export default Folder;
