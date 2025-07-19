@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router";
 
 function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>(null);
+  const [files, setFiles] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const PORT = import.meta.env.VITE_API_URL;
   const location = useLocation();
@@ -56,7 +57,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, loading, logoutUser }}>
+    <UserContext.Provider value={{ user, setUser, loading, logoutUser, files, setFiles }}>
       {children}
     </UserContext.Provider>
   );

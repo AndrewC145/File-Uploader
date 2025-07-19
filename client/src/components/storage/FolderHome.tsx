@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, useContext, useCallback } from "react";
+import { useEffect, useContext, useCallback } from "react";
 import axios from "axios";
 import UserContext from "@/context/userContext";
 import File from "./File";
 
 function FolderHome() {
-  const { user } = useContext(UserContext);
-  const [files, setFiles] = useState<any[]>([]);
+  const { user, files, setFiles } = useContext(UserContext);
   const PORT = import.meta.env.VITE_API_URL;
 
   const fetchHomeFiles = useCallback(async () => {
@@ -25,11 +24,15 @@ function FolderHome() {
       console.error("Error fetching home files:", error);
       throw new Error("Failed to fetch home files");
     }
-  }, [PORT, user?.id]);
+  }, [PORT, user?.id, setFiles]);
 
   useEffect(() => {
     fetchHomeFiles();
-  }, [fetchHomeFiles]);
+
+    return () => {
+      setFiles([]);
+    };
+  }, [fetchHomeFiles, setFiles]);
 
   return <File files={files} />;
 }

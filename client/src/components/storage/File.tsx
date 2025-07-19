@@ -10,9 +10,13 @@ function File({ files }: { files: any[] }) {
   const { user } = useContext(UserContext);
   const PORT = import.meta.env.VITE_API_URL;
   const params = useParams();
-  const userId = params.userId;
-  const folderId = params.folderId;
-  const folderName = params.folderName;
+  const userId = params.userId || user?.id;
+  const folderId = params.folderId || "";
+  const folderName = params.folderName || "";
+
+  if (userId !== user?.id) {
+    return <p className="text-center text-xl text-red-500">Unauthorized access to files</p>;
+  }
 
   const fetchFileDetails = useCallback(async () => {
     try {
@@ -28,10 +32,6 @@ function File({ files }: { files: any[] }) {
       throw new Error("Failed to fetch file details");
     }
   }, [PORT, userId, folderId, folderName]);
-
-  if (userId !== user?.id) {
-    return <p className="text-center text-red-500">Unauthorized access to files.</p>;
-  }
 
   if (!files || files.length === 0) {
     return <p className="text-center text-gray-500">No files found.</p>;
