@@ -103,22 +103,14 @@ async function loginUser(
     }
 
     if (user) {
-      req.login(user, async (loginErr) => {
+      req.login(user, (loginErr) => {
         if (loginErr) {
           return next(loginErr);
         }
 
-        try {
-          const homeFolder = await fetchHomeFolder(user.id);
-          req.session.homeFolderId = homeFolder.id;
-          return res.status(200).json({
-            message: `Login successful, Hi ${user.username}`,
-            user,
-          });
-        } catch (err) {
-          console.error('Error fetching home folder:', err);
-          return res.status(500).json({ error: 'Internal server error' });
-        }
+        return res
+          .status(200)
+          .json({ message: `Login successful! Hi ${user.username}.`, user });
       });
     }
   })(req, res, next);
