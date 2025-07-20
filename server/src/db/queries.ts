@@ -55,6 +55,17 @@ async function storeFile(
 }
 
 async function storeFolder(userId: number, folderName: string): Promise<any> {
+  const existingFolder = await prisma.folder.findFirst({
+    where: {
+      authorId: userId,
+      name: folderName,
+    },
+  });
+
+  if (existingFolder) {
+    throw new Error('Folder already exists');
+  }
+
   const folder = await prisma.folder.create({
     data: {
       authorId: userId,

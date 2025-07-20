@@ -35,6 +35,8 @@ type FileDialogProps = {
 
 function FileDialog({ openButton, action }: FileDialogProps) {
   const { user } = useContext(UserContext);
+  const [open, setOpen] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedFolder, setSelectedFolder] = useState<number>(0);
 
@@ -64,7 +66,7 @@ function FileDialog({ openButton, action }: FileDialogProps) {
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{openButton}</DialogTrigger>
       <DialogContent>
         <form action={action} onSubmit={handleSubmit} method="POST" encType="multipart/form-data">

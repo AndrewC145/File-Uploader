@@ -16,11 +16,14 @@ type FolderDialogProps = {
   openButton: React.ReactNode;
   action: string;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  err?: string;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 };
 
-function FolderDialog({ openButton, action, onSubmit }: FolderDialogProps) {
+function FolderDialog({ openButton, action, onSubmit, err, open, setOpen }: FolderDialogProps) {
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{openButton}</DialogTrigger>
       <DialogContent>
         <form action={action} method="POST" onSubmit={onSubmit}>
@@ -39,6 +42,7 @@ function FolderDialog({ openButton, action, onSubmit }: FolderDialogProps) {
               placeholder="Enter folder name"
               required
             />
+            {err && <p className="text-sm text-red-500">{err}</p>}
           </div>
           <DialogFooter>
             <DialogClose asChild>

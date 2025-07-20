@@ -2,7 +2,7 @@
 import { Plus, FileUp } from "lucide-react";
 import FolderDialog from "./FolderDialog";
 import FileDialog from "./FileDialog";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import UserContext from "@/context/userContext";
 import axios from "axios";
 import { useFolders } from "./FolderLoader";
@@ -12,6 +12,8 @@ const PORT: string = import.meta.env.VITE_API_URL;
 const action: string = `${PORT}/upload`;
 
 function Sidebar() {
+  const [folderDialogOpen, setFolderDialogOpen] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const { user } = useContext(UserContext);
   const userId: string = user?.id;
   const { folders, getFolders } = useFolders(userId);
@@ -31,10 +33,13 @@ function Sidebar() {
       });
       if (response.status === 200) {
         console.log("Folder created successfully:", response.data);
+        setFolderDialogOpen(false);
         getFolders();
+        setError("");
       }
     } catch (error: any) {
       console.error("Error creating folder:", error);
+      setError(error.response?.data?.message || "Failed to create folder");
     }
   };
   return (
@@ -47,6 +52,9 @@ function Sidebar() {
               openButton={<IconButton icon={<Plus />} />}
               action={folderAction}
               onSubmit={createFolder}
+              err={error}
+              open={folderDialogOpen}
+              setOpen={setFolderDialogOpen}
             />
             <FileDialog openButton={<IconButton icon={<FileUp />} />} action={action} />
           </div>
