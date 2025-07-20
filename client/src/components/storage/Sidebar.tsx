@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Plus, FileUp } from "lucide-react";
 import FolderDialog from "./FolderDialog";
 import FileDialog from "./FileDialog";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import UserContext from "@/context/userContext";
-import axios from "axios";
 import { useFolders } from "./FolderLoader";
 import ListItem from "./ListItem";
 
@@ -12,36 +10,10 @@ const PORT: string = import.meta.env.VITE_API_URL;
 const action: string = `${PORT}/upload`;
 
 function Sidebar() {
-  const [folderDialogOpen, setFolderDialogOpen] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
   const { user } = useContext(UserContext);
   const userId: string = user?.id;
   const { folders, getFolders } = useFolders(userId);
   const folderAction = `${PORT}/${userId}/createFolder`;
-
-  const createFolder: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    const formData: FormData = new FormData(e.currentTarget);
-    const data: object = Object.fromEntries(formData.entries());
-
-    try {
-      const response = await axios.post(folderAction, JSON.stringify(data), {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
-      if (response.status === 200) {
-        console.log("Folder created successfully:", response.data);
-        setFolderDialogOpen(false);
-        getFolders();
-        setError("");
-      }
-    } catch (error: any) {
-      console.error("Error creating folder:", error);
-      setError(error.response?.data?.message || "Failed to create folder");
-    }
-  };
   return (
     <aside className="h-screen w-[20%] bg-gray-200">
       <div className="px-4 py-2">
@@ -51,10 +23,7 @@ function Sidebar() {
             <FolderDialog
               openButton={<IconButton icon={<Plus />} />}
               action={folderAction}
-              onSubmit={createFolder}
-              err={error}
-              open={folderDialogOpen}
-              setOpen={setFolderDialogOpen}
+              getFolders={getFolders}
             />
             <FileDialog openButton={<IconButton icon={<FileUp />} />} action={action} />
           </div>

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -11,22 +13,46 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import axios from "axios";
 
 type FolderDialogProps = {
   openButton: React.ReactNode;
   action: string;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  err?: string;
-  open: boolean;
-  setOpen: (open: boolean) => void;
+  getFolders: () => void;
 };
 
-function FolderDialog({ openButton, action, onSubmit, err, open, setOpen }: FolderDialogProps) {
+function FolderDialog({ openButton, action, getFolders }: FolderDialogProps) {
+  const [folderDialogOpen, setFolderDialogOpen] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+
+  const createFolder: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    const formData: FormData = new FormData(e.currentTarget);
+    const data: object = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await axios.post(action, JSON.stringify(data), {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        console.log("Folder created successfully:", response.data);
+        setFolderDialogOpen(false);
+        getFolders();
+        setError("");
+      }
+    } catch (error: any) {
+      console.error("Error creating folder:", error);
+      setError(error.response?.data?.message || "Failed to create folder");
+    }
+  };
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={folderDialogOpen} onOpenChange={setFolderDialogOpen}>
       <DialogTrigger>{openButton}</DialogTrigger>
       <DialogContent>
-        <form action={action} method="POST" onSubmit={onSubmit}>
+        <form action={action} method="POST" onSubmit={createFolder}>
           <DialogHeader>
             <DialogTitle>Create Folder</DialogTitle>
             <DialogDescription>Add a new folder here.</DialogDescription>
@@ -42,7 +68,7 @@ function FolderDialog({ openButton, action, onSubmit, err, open, setOpen }: Fold
               placeholder="Enter folder name"
               required
             />
-            {err && <p className="text-sm text-red-500">{err}</p>}
+            {error && <p className="text-sm text-red-500">{error}</p>}
           </div>
           <DialogFooter>
             <DialogClose asChild>
