@@ -58,12 +58,14 @@ function FileDialog({ openButton, action }: FileDialogProps) {
       return;
     }
 
-    try {
-      await uploadFile(user.id, selectedFile, selectedFolder);
+    const res = await uploadFile(user.id, selectedFile, selectedFolder);
+    if (res.status === 200) {
       setOpen(false);
       setError("");
-    } catch (error: any) {
-      console.error("Error uploading file:", error);
+    } else if (res.status === 404) {
+      setError(res.message || "Folder not found");
+    } else if (res.status === 500) {
+      setError(res.message || "Internal Server Error");
     }
   };
 
@@ -79,8 +81,11 @@ function FileDialog({ openButton, action }: FileDialogProps) {
           <div className="grid gap-4">
             <Label htmlFor="fileName">File Name</Label>
             <Input onChange={handleFileChange} id="fileName" name="fileName" type="file" />
-            <Label htmlFor="folderSelect">Select Folder</Label>
-            <FolderSelect userId={user.id} onChange={handleFolderChange} />
+            <div className="flex flex-col gap-2.5">
+              <Label htmlFor="folderSelect">Select Folder</Label>
+              {error && <p className="text-sm text-red-400">{error}</p>}
+              <FolderSelect userId={user.id} onChange={handleFolderChange} />
+            </div>
           </div>
           <DialogFooter>
             <DialogClose asChild>
@@ -94,7 +99,7 @@ function FileDialog({ openButton, action }: FileDialogProps) {
   );
 }
 
-async function uploadFile(userId: string, file: File, folderId: number): Promise<void> {
+async function uploadFile(userId: string, file: File, folderId: number): Promise<any> {
   const formData = new FormData();
   formData.append("fileName", file);
   formData.append("userId", userId);
@@ -107,10 +112,13 @@ async function uploadFile(userId: string, file: File, folderId: number): Promise
       },
       withCredentials: true,
     });
-    console.log(response);
+    return { status: response.status, data: response.data };
   } catch (error: any) {
     console.error("Error uploading file:", error);
-    throw new Error("Failed to upload file");
+    return {
+      status: error.status || 500,
+      message: error.response?.data?.error || "An error occurred",
+    };
   }
 }
 

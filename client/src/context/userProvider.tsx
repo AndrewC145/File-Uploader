@@ -47,7 +47,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
         },
       );
       if (response.status === 200) {
-        console.log("Logout successful");
         setUser(null);
         navigate("/login", { replace: true });
       }

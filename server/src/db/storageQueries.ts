@@ -7,6 +7,18 @@ async function storeFile(
   fileSize: number,
   fileType: string
 ): Promise<any> {
+  const existingFile = await prisma.file.findFirst({
+    where: {
+      authorId: userId,
+      name: fileName,
+      folderId: folderId,
+    },
+  });
+
+  if (existingFile) {
+    throw new Error('File already exists in this folder');
+  }
+
   const file = await prisma.file.create({
     data: {
       authorId: userId,

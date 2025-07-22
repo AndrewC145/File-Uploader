@@ -7,7 +7,6 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 async function uploadFile(req: Request, res: Response): Promise<any> {
   try {
-    console.log(req.body);
     const file: any = req.file;
 
     if (!file) {
@@ -37,9 +36,10 @@ async function uploadFile(req: Request, res: Response): Promise<any> {
     await storeFile(user, cleanName, folderId, file.size, file.mimetype);
     await uploadFileToSupabase(file, user, folder);
     return res.status(200).json({ message: 'File uploaded successfully.' });
-  } catch (error) {
-    console.error('Error uploading file:', error);
-    return res.status(500).json({ message: 'Internal server error.' });
+  } catch (error: any) {
+    return res
+      .status(500)
+      .json({ error: error.message || 'Internal Server Error' });
   }
 }
 

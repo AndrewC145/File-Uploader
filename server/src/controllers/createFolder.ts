@@ -20,7 +20,6 @@ async function createFolder(req: Request, res: Response): Promise<any> {
       folder,
     });
   } catch (error: any) {
-    console.error('Error creating folder:', error);
     return res
       .status(500)
       .json({ error: error.message || 'Internal Server Error' });
