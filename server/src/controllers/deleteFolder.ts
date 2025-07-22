@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { supabase } from '../db/supabaseClient';
-import { deleteFolderFromDB } from '../db/queries';
+import { deleteFolderFromDB } from '../db/storageQueries';
 
 async function deleteFolder(req: Request, res: Response): Promise<any> {
   const { folderId, userId, folderName } = req.body;

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { supabase } from '../db/supabaseClient';
-import { fetchFilesFromDB } from '../db/queries';
+import { fetchFilesFromDB } from '../db/storageQueries';
 
 async function displayFiles(req: Request, res: Response): Promise<any> {
   try {

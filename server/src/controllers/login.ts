@@ -3,7 +3,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { body, Result, validationResult } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
 import prisma from '../client';
-import { checkUser, fetchHomeFolder } from '../db/queries';
+import { checkUser } from '../db/queries';
 import { Users } from '../../generated/prisma';
 
 const loginValidation = [

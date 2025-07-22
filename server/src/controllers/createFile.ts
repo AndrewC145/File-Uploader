@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { supabase } from '../db/supabaseClient';
-import { storeFile, findFolderById } from '../db/queries';
+import { storeFile, findFolderById } from '../db/storageQueries';
 import multer from 'multer';
 
 const upload = multer({ storage: multer.memoryStorage() });

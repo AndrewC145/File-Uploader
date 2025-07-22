@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { storeFolder } from '../db/queries';
+import { storeFolder } from '../db/storageQueries';
 import { supabase } from '../db/supabaseClient';
 import { Folder } from '../../generated/prisma';
 
