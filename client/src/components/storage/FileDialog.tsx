@@ -60,6 +60,8 @@ function FileDialog({ openButton, action }: FileDialogProps) {
 
     try {
       await uploadFile(user.id, selectedFile, selectedFolder);
+      setOpen(false);
+      setError("");
     } catch (error: any) {
       console.error("Error uploading file:", error);
     }
