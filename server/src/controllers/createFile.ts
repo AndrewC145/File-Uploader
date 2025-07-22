@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { supabase } from '../db/supabaseClient';
-import { storeFile } from '../db/queries';
+import { storeFile, findFolderById } from '../db/queries';
 import multer from 'multer';
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -26,10 +26,16 @@ async function uploadFile(req: Request, res: Response): Promise<any> {
       return res.status(400).json({ message: 'Folder ID is required.' });
     }
 
+    const folder = await findFolderById(folderId);
+
+    if (!folder) {
+      return res.status(404).json({ message: 'Folder not found.' });
+    }
+
     let cleanName = cleanFileName(file.originalname);
 
     await storeFile(user, cleanName, folderId, file.size, file.mimetype);
-    await uploadFileToSupabase(file, user);
+    await uploadFileToSupabase(file, user, folder);
     return res.status(200).json({ message: 'File uploaded successfully.' });
   } catch (error) {
     console.error('Error uploading file:', error);

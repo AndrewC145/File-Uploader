@@ -121,6 +121,20 @@ async function fetchHomeFiles(userId: number, folderId: number): Promise<any> {
   return files;
 }
 
+async function findFolderById(folderId: number): Promise<any> {
+  const folder = await prisma.folder.findUnique({
+    where: {
+      id: folderId,
+    },
+  });
+
+  if (!folder) {
+    throw new Error('Folder not found');
+  }
+
+  return folder.name;
+}
+
 export {
   hashPassword,
   checkUser,
@@ -131,4 +145,5 @@ export {
   fetchFilesFromDB,
   fetchHomeFolder,
   fetchHomeFiles,
+  findFolderById,
 };
