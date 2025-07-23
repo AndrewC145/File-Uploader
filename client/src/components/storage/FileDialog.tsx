@@ -34,12 +34,11 @@ type FileDialogProps = {
 };
 
 function FileDialog({ openButton, action }: FileDialogProps) {
-  const { user } = useContext(UserContext);
+  const { user, fetchFiles } = useContext(UserContext);
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedFolder, setSelectedFolder] = useState<number>(0);
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const file = e.target.files[0];
@@ -50,6 +49,10 @@ function FileDialog({ openButton, action }: FileDialogProps) {
   const handleFolderChange = (id: string) => {
     setSelectedFolder(Number(id));
   };
+
+  const { folders } = useFolders(user.id);
+
+  const folderName = folders.find((folder) => folder.id === selectedFolder);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -62,6 +65,7 @@ function FileDialog({ openButton, action }: FileDialogProps) {
     if (res.status === 200) {
       setOpen(false);
       setError("");
+      fetchFiles(user.id, selectedFolder, folderName.name);
     } else if (res.status === 404) {
       setError(res.message || "Folder not found");
     } else if (res.status === 500) {
@@ -112,6 +116,7 @@ async function uploadFile(userId: string, file: File, folderId: number): Promise
       },
       withCredentials: true,
     });
+    console.log(response.data);
     return { status: response.status, data: response.data };
   } catch (error: any) {
     console.error("Error uploading file:", error);

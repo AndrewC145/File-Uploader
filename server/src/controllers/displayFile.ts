@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { supabase } from '../db/supabaseClient';
-import { fetchFilesFromDB } from '../db/storageQueries';
 
 async function displayFiles(req: Request, res: Response): Promise<any> {
   try {
@@ -12,7 +11,6 @@ async function displayFiles(req: Request, res: Response): Promise<any> {
       return res.status(400).json({ message: 'Folder ID is required.' });
     }
 
-    const files = await fetchFilesFromDB(folderId);
     const storageFiles = await getFilesFromSupabase(id, folderName);
 
     return res

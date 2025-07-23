@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import UserContext from "./userContext";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router";
@@ -55,8 +55,31 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const fetchFiles = useCallback(
+    async (userId: string, folderId: number, folderName: string) => {
+      try {
+        const response = await axios.get(
+          `${PORT}/${userId}/${folderId}/${folderName}/displayFiles`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          },
+        );
+        setFiles(response.data.storageFiles);
+      } catch (error: any) {
+        console.error("Error fetching files:", error);
+        throw new Error("Failed to fetch files");
+      }
+    },
+    [PORT, setFiles],
+  );
+
   return (
-    <UserContext.Provider value={{ user, setUser, loading, logoutUser, files, setFiles }}>
+    <UserContext.Provider
+      value={{ user, setUser, loading, logoutUser, files, setFiles, fetchFiles }}
+    >
       {children}
     </UserContext.Provider>
   );
