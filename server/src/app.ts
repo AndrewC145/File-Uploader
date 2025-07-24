@@ -11,6 +11,7 @@ import displayFoldersRoute from './routes/displayFolderRoute';
 import deleteFolderRoute from './routes/deleteFolderRoute';
 import displayFilesRoute from './routes/displayFilesRoute';
 import homeRouter from './routes/homeFiles';
+import deleteFileRoute from './routes/deleteFileRoute';
 
 const app = express();
 const corsOptions = {
@@ -50,6 +51,7 @@ app.use('/:userId/folders', displayFoldersRoute);
 app.use('/deleteFolder', deleteFolderRoute);
 app.use('/storage', homeRouter);
 app.use('/', displayFilesRoute);
+app.use('/deleteFile', deleteFileRoute);
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({

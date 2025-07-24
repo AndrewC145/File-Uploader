@@ -84,7 +84,6 @@ async function fetchHomeFiles(userId: number, folderId: number): Promise<any> {
     },
   });
 
-  console.log('Home files fetched:', files);
   return files;
 }
 
@@ -101,6 +100,15 @@ async function findFolderById(folderId: number): Promise<any> {
 
   return folder.name;
 }
+async function deleteFile(fileId: number): Promise<any> {
+  const file = await prisma.file.delete({
+    where: {
+      id: fileId,
+    },
+  });
+
+  return file;
+}
 
 export {
   storeFile,
@@ -109,4 +117,5 @@ export {
   fetchFilesFromDB,
   fetchHomeFiles,
   findFolderById,
+  deleteFile,
 };

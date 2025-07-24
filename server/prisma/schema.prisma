@@ -17,7 +17,7 @@ model Users {
 }
 
 model File {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   name      String
   size      Int
   type      String
