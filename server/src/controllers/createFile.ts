@@ -33,8 +33,17 @@ async function uploadFile(req: Request, res: Response): Promise<any> {
 
     let cleanName = cleanFileName(file.originalname);
 
-    await storeFile(user, cleanName, folderId, file.size, file.mimetype);
-    await uploadFileToSupabase(file, user, folder);
+    const uploadedFile = await uploadFileToSupabase(file, user, folder);
+    const fileId = uploadedFile.id;
+
+    await storeFile(
+      fileId,
+      user,
+      cleanName,
+      folderId,
+      file.size,
+      file.mimetype
+    );
     return res.status(200).json({ message: 'File uploaded successfully.' });
   } catch (error: any) {
     return res

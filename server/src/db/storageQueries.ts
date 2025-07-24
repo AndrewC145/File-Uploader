@@ -1,6 +1,7 @@
 import prisma from '../client';
 
 async function storeFile(
+  fileId: string,
   userId: number,
   fileName: string,
   folderId: number,
@@ -21,6 +22,7 @@ async function storeFile(
 
   const file = await prisma.file.create({
     data: {
+      id: fileId,
       authorId: userId,
       name: fileName,
       folderId: folderId,
@@ -29,7 +31,6 @@ async function storeFile(
     },
   });
 
-  console.log('File stored in database:', file);
   return file;
 }
 
@@ -100,7 +101,7 @@ async function findFolderById(folderId: number): Promise<any> {
 
   return folder.name;
 }
-async function deleteFile(fileId: number): Promise<any> {
+async function deleteFile(fileId: string): Promise<any> {
   const file = await prisma.file.delete({
     where: {
       id: fileId,
