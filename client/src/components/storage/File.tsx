@@ -4,7 +4,7 @@ import DropDown from "./Dropdown";
 import { EllipsisVertical } from "lucide-react";
 import axios from "axios";
 
-const File = memo(function File({ files }: { files: any[] }) {
+const File = memo(function File({ files, folderId }: { files: any[]; folderId: number | null }) {
   if (!files || files.length === 0) {
     return <p className="py-4 text-center text-gray-500">No files found.</p>;
   }
@@ -13,13 +13,14 @@ const File = memo(function File({ files }: { files: any[] }) {
 
   const handleDelete = async (fileId: string) => {
     try {
-      console.log("Deleting file...", fileId);
+      console.log("Deleting file...", folderId);
       const response = await axios.delete(`${PORT}/deleteFile`, {
         headers: {
           "Content-Type": "application/json",
         },
         data: {
           fileId,
+          folderId,
         },
       });
       if (response.status === 200) {

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { supabase } from '../db/supabaseClient';
-import { fetchFilesFromDB } from '../db/storageQueries';
+import { findHome } from '../db/storageQueries';
 
 async function displayFiles(req: Request, res: Response): Promise<any> {
   try {
@@ -12,11 +12,19 @@ async function displayFiles(req: Request, res: Response): Promise<any> {
       return res.status(400).json({ message: 'Folder ID is required.' });
     }
 
+    const homeFolder = await findHome(id);
+
+    if (!homeFolder) {
+      return res.status(404).json({ message: 'Home folder is required.' });
+    }
+
+    const homeId = homeFolder.id;
+
     const storageFiles = await getFilesFromSupabase(id, folderName);
 
     return res
       .status(200)
-      .json({ message: 'Files fetched successfully.', storageFiles });
+      .json({ message: 'Files fetched successfully.', storageFiles, homeId });
   } catch (error: any) {
     console.error('Error fetching files:', error);
     return res.status(500).json({ message: 'Internal server error.' });

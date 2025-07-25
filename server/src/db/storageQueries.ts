@@ -8,13 +8,7 @@ async function storeFile(
   fileSize: number,
   fileType: string
 ): Promise<any> {
-  const existingFile = await prisma.file.findFirst({
-    where: {
-      authorId: userId,
-      name: fileName,
-      folderId: folderId,
-    },
-  });
+  const existingFile = await findFile(userId, fileId, folderId);
 
   if (existingFile) {
     throw new Error('File already exists in this folder');
@@ -111,6 +105,33 @@ async function deleteFile(fileId: string): Promise<any> {
   return file;
 }
 
+async function findFile(
+  userId: number,
+  fileId: string,
+  folderId: number
+): Promise<any> {
+  const file = await prisma.file.findFirst({
+    where: {
+      authorId: userId,
+      id: fileId,
+      folderId: folderId,
+    },
+  });
+
+  return file;
+}
+
+async function findHome(userId: number): Promise<any> {
+  const folder = await prisma.folder.findFirst({
+    where: {
+      authorId: userId,
+      name: 'Home',
+    },
+  });
+
+  return folder;
+}
+
 export {
   storeFile,
   storeFolder,
@@ -119,4 +140,6 @@ export {
   fetchHomeFiles,
   findFolderById,
   deleteFile,
+  findFile,
+  findHome,
 };
