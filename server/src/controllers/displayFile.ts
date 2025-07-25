@@ -12,19 +12,11 @@ async function displayFiles(req: Request, res: Response): Promise<any> {
       return res.status(400).json({ message: 'Folder ID is required.' });
     }
 
-    const homeFolder = await findHome(id);
-
-    if (!homeFolder) {
-      return res.status(404).json({ message: 'Home folder is required.' });
-    }
-
-    const homeId = homeFolder.id;
-
     const storageFiles = await getFilesFromSupabase(id, folderName);
 
     return res
       .status(200)
-      .json({ message: 'Files fetched successfully.', storageFiles, homeId });
+      .json({ message: 'Files fetched successfully.', storageFiles });
   } catch (error: any) {
     console.error('Error fetching files:', error);
     return res.status(500).json({ message: 'Internal server error.' });
@@ -57,10 +49,19 @@ async function displayHomeFiles(req: Request, res: Response): Promise<any> {
       return res.status(403).json({ message: 'Unauthorized access.' });
     }
 
+    const homeFolder = await findHome(userId);
+
+    if (!homeFolder) {
+      return res.status(404).json({ message: 'Home folder is required.' });
+    }
+
+    const homeId = homeFolder.id;
+
     const homeFiles = await getFilesFromSupabase(userId, 'Home');
     return res.status(200).json({
       message: 'Home files fetched successfully.',
       homeFiles: homeFiles,
+      homeId: homeId,
     });
   } catch (error: any) {
     console.error('Error fetching home files:', error);

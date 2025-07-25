@@ -20,6 +20,7 @@ function FolderHome() {
         },
         withCredentials: true,
       });
+      console.log(response);
       setFiles(response.data.homeFiles);
       setHomeId(response.data.homeId);
     } catch (error: any) {
