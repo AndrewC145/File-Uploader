@@ -5,7 +5,8 @@ import UserContext from "@/context/userContext";
 import File from "./File";
 
 function FolderHome() {
-  const { user, files, setFiles } = useContext(UserContext);
+  const { user } = useContext(UserContext);
+  const [homeFiles, setHomeFiles] = useState<any[]>([]);
   const [homeId, setHomeId] = useState<number | null>(null);
   const PORT = import.meta.env.VITE_API_URL;
 
@@ -20,23 +21,23 @@ function FolderHome() {
         },
         withCredentials: true,
       });
-      setFiles(response.data.homeFiles);
+      setHomeFiles(response.data.homeFiles);
       setHomeId(response.data.homeId);
     } catch (error: any) {
       console.error("Error fetching home files:", error);
       throw new Error("Failed to fetch home files");
     }
-  }, [PORT, user?.id, setFiles]);
+  }, [PORT, user?.id, setHomeFiles]);
 
   useEffect(() => {
     fetchHomeFiles();
 
     return () => {
-      setFiles([]);
+      setHomeFiles([]);
     };
-  }, [fetchHomeFiles, setFiles]);
+  }, [fetchHomeFiles, setHomeFiles]);
 
-  return <File files={files} folderId={homeId} userId={user.id} />;
+  return <File files={homeFiles} folderId={homeId} userId={user.id} />;
 }
 
 export default FolderHome;

@@ -46,7 +46,6 @@ async function uploadFolderToSupabase(
     console.error('Error uploading folder to Supabase:', error);
     throw new Error('Failed to upload folder to Supabase');
   } else {
-    console.log('Folder uploaded to Supabase:', data);
     return data;
   }
 }

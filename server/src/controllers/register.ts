@@ -29,7 +29,6 @@ async function createInitialFolder(userId: number) {
     console.error('Error creating initial folder:', error);
     throw new Error('Failed to create initial folder');
   } else {
-    console.log('Initial folder created successfully:', data);
     return folder;
   }
 }

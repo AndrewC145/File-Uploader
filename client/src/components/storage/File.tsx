@@ -21,8 +21,7 @@ const File = memo(function File({
 
   const handleDelete = async (fileId: string) => {
     try {
-      console.log("Deleting file...", folderId);
-      const response = await axios.delete(`${PORT}/deleteFile`, {
+      await axios.delete(`${PORT}/deleteFile`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -32,9 +31,6 @@ const File = memo(function File({
           userId,
         },
       });
-      if (response.status === 200) {
-        console.log("File deleted successfully");
-      }
     } catch (error: any) {
       console.error("Error deleting file:", error);
     }

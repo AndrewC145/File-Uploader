@@ -35,8 +35,6 @@ async function supabaseDeleteFile(
     throw new Error('Folder name and file name are required.');
   }
 
-  console.log(folderName, fileName);
-
   const { data, error } = await supabase.storage
     .from('users')
     .remove([`${userId}/${folderName}/${fileName}`]);
