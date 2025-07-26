@@ -36,7 +36,7 @@ function FolderHome() {
     };
   }, [fetchHomeFiles, setFiles]);
 
-  return <File files={files} folderId={homeId} />;
+  return <File files={files} folderId={homeId} userId={user.id} />;
 }
 
 export default FolderHome;

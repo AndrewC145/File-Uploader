@@ -1,22 +1,24 @@
 import { Request, Response } from 'express';
 import { supabase } from '../db/supabaseClient';
-import { deleteFile, findFolderById } from '../db/storageQueries';
+import { deleteFile, findFolderById, findFile } from '../db/storageQueries';
 
 async function deleteFileFromStorage(
   req: Request,
   res: Response
 ): Promise<any> {
-  const { fileId, folderId } = req.body;
+  const { userId, fileId, folderId } = req.body;
 
-  if (!fileId || !folderId) {
+  if (!fileId || !folderId || !userId) {
     return res
       .status(400)
-      .json({ error: 'File ID and Folder ID are required.' });
+      .json({ error: 'User ID, File ID and Folder ID are required.' });
   }
 
   const folderName = await findFolderById(folderId);
+  const file = await findFile(userId, fileId, folderId);
+  const fileName = file.name;
 
-  await supabaseDeleteFile(folderName, fileId);
+  await supabaseDeleteFile(userId, folderName, fileName);
   await deleteFile(fileId);
 
   return res.status(200).json({
@@ -25,6 +27,7 @@ async function deleteFileFromStorage(
 }
 
 async function supabaseDeleteFile(
+  userId: string,
   folderName: string,
   fileName: string
 ): Promise<void> {
@@ -32,9 +35,11 @@ async function supabaseDeleteFile(
     throw new Error('Folder name and file name are required.');
   }
 
+  console.log(folderName, fileName);
+
   const { data, error } = await supabase.storage
     .from('users')
-    .remove([`${folderName}/${fileName}`]);
+    .remove([`${userId}/${folderName}/${fileName}`]);
 
   if (!data) {
     throw new Error('File not found or already deleted.');

@@ -22,7 +22,7 @@ function Folder() {
     };
   }, [fetchFiles, setFiles, user, folderId, folderName, user.id]);
 
-  return <File files={files} folderId={folderId} />;
+  return <File userId={user.id} files={files} folderId={folderId} />;
 }
 
 export default Folder;
