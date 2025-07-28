@@ -6,6 +6,7 @@ import Login from "./components/forms/Login";
 import Storage from "./components/storage/Storage";
 import cloudBg from "./assets/images/cloud-hero.jpg";
 import UserProvider from "./context/userProvider";
+import StorageProvider from "./context/storageProvider";
 
 function AppContext() {
   const location = useLocation();
@@ -14,16 +15,18 @@ function AppContext() {
   if (isHome) {
     return (
       <UserProvider>
-        <div
-          style={{
-            backgroundImage: `url(${cloudBg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <Header />
-          <Home />
-        </div>
+        <StorageProvider>
+          <div
+            style={{
+              backgroundImage: `url(${cloudBg})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <Header />
+            <Home />
+          </div>
+        </StorageProvider>
       </UserProvider>
     );
   }
@@ -31,14 +34,16 @@ function AppContext() {
   return (
     <>
       <UserProvider>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/storage" element={<Storage />} />
-          <Route path="/storage/:userId?/:folderId?/:folderName?" element={<Storage />} />
-        </Routes>
+        <StorageProvider>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/storage" element={<Storage />} />
+            <Route path="/storage/:userId?/:folderId?/:folderName?" element={<Storage />} />
+          </Routes>
+        </StorageProvider>
       </UserProvider>
     </>
   );

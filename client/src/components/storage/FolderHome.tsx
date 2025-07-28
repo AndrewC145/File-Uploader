@@ -1,41 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, useContext, useCallback } from "react";
-import axios from "axios";
+import { useEffect, useContext } from "react";
 import UserContext from "@/context/userContext";
+import StorageContext from "@/context/storageContext";
 import File from "./File";
+import { fetchHomeFiles } from "./fetchHome";
 
 function FolderHome() {
   const { user } = useContext(UserContext);
-  const [homeFiles, setHomeFiles] = useState<any[]>([]);
-  const [homeId, setHomeId] = useState<number | null>(null);
+  const { homeId, setHomeId, homeFiles, setHomeFiles } = useContext(StorageContext);
   const PORT = import.meta.env.VITE_API_URL;
 
-  const fetchHomeFiles = useCallback(async () => {
-    try {
-      const response = await axios.get(`${PORT}/storage`, {
-        params: {
-          userId: user.id,
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
-      setHomeFiles(response.data.homeFiles);
-      setHomeId(response.data.homeId);
-    } catch (error: any) {
-      console.error("Error fetching home files:", error);
-      throw new Error("Failed to fetch home files");
-    }
-  }, [PORT, user?.id, setHomeFiles]);
-
   useEffect(() => {
-    fetchHomeFiles();
+    fetchHomeFiles(PORT, user.id, setHomeFiles, setHomeId);
 
     return () => {
       setHomeFiles([]);
     };
-  }, [fetchHomeFiles, setHomeFiles]);
+  }, [PORT, user.id, setHomeId, setHomeFiles]);
 
   return <File files={homeFiles} folderId={homeId} userId={user.id} />;
 }

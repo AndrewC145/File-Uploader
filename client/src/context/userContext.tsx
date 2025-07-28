@@ -6,9 +6,6 @@ type UserContextType = {
   setUser: Dispatch<SetStateAction<any>>;
   loading: boolean;
   logoutUser: () => Promise<void>;
-  files: any[];
-  setFiles: Dispatch<SetStateAction<any[]>>;
-  fetchFiles: (userId: string, folderId: number, folderName: string) => Promise<void>;
 };
 
 const UserContext = createContext<UserContextType>({
@@ -16,9 +13,6 @@ const UserContext = createContext<UserContextType>({
   setUser: () => {},
   loading: false,
   logoutUser: async () => {},
-  files: [],
-  setFiles: () => {},
-  fetchFiles: async () => {},
 });
 
 export default UserContext;

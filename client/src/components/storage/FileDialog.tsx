@@ -22,9 +22,12 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "@radix-ui/react-label";
 import axios from "axios";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import UserContext from "@/context/userContext";
+import StorageContext from "@/context/storageContext";
 import { useFolders } from "./FolderLoader";
+import { useLocation, type Location } from "react-router";
+import { fetchHomeFiles } from "./fetchHome";
 
 const PORT = import.meta.env.VITE_API_URL;
 
@@ -34,11 +37,28 @@ type FileDialogProps = {
 };
 
 function FileDialog({ openButton, action }: FileDialogProps) {
-  const { user, fetchFiles } = useContext(UserContext);
+  const { user } = useContext(UserContext);
+  const { fetchFiles, homeId, setHomeId, setHomeFiles } = useContext(StorageContext);
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedFolder, setSelectedFolder] = useState<number>(0);
+
+  const location: Location = useLocation();
+  const currentFolderId = location.state?.folderId;
+  const currentFolderName = location.state?.folderName;
+
+  const { folders } = useFolders(user?.id || "");
+
+  useEffect(() => {
+    if (!homeId) {
+      const backup = folders.find((folder) => folder.name === "Home")?.id;
+      if (backup !== undefined) {
+        setHomeId(backup);
+      }
+    }
+  }, [folders, homeId, setHomeId]);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const file = e.target.files[0];
@@ -49,10 +69,6 @@ function FileDialog({ openButton, action }: FileDialogProps) {
   const handleFolderChange = (id: string) => {
     setSelectedFolder(Number(id));
   };
-
-  const { folders } = useFolders(user.id);
-
-  const folderName = folders.find((folder) => folder.id === selectedFolder);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -65,7 +81,11 @@ function FileDialog({ openButton, action }: FileDialogProps) {
     if (res.status === 200) {
       setOpen(false);
       setError("");
-      fetchFiles(user.id, selectedFolder, folderName.name);
+      if (currentFolderId && currentFolderName) {
+        fetchFiles(user.id, currentFolderId, currentFolderName);
+      } else {
+        fetchHomeFiles(PORT, user.id, setHomeFiles, setHomeId);
+      }
     } else if (res.status === 404) {
       setError(res.message || "Folder not found");
     } else if (res.status === 500) {
@@ -116,7 +136,6 @@ async function uploadFile(userId: string, file: File, folderId: number): Promise
       },
       withCredentials: true,
     });
-    console.log(response.data);
     return { status: response.status, data: response.data };
   } catch (error: any) {
     console.error("Error uploading file:", error);
