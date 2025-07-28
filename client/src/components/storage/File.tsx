@@ -7,6 +7,7 @@ import { fetchHomeFiles } from "./fetchHome";
 import StorageContext from "@/context/storageContext";
 import { useLocation } from "react-router";
 import type { Location } from "react-router";
+import { DropdownMenuItem } from "../ui/dropdown-menu";
 
 const File = memo(function File({
   userId,
@@ -50,6 +51,10 @@ const File = memo(function File({
     }
   };
 
+  const downloadElement = (
+    <DropdownMenuItem className="cursor-pointer text-green-600">Download</DropdownMenuItem>
+  );
+
   return (
     <>
       {files.map((file) => {
@@ -62,7 +67,11 @@ const File = memo(function File({
             <p className="flex-1">{file.metadata.mimetype}</p>
             <p className="flex-1">{file.metadata.size} bytes</p>
             <p className="flex-1">{new Date(file.metadata.lastModified).toLocaleDateString()}</p>
-            <DropDown onFunctionClick={() => handleDelete(file.id)} icon={<EllipsisVertical />} />
+            <DropDown
+              onFunctionClick={() => handleDelete(file.id)}
+              icon={<EllipsisVertical />}
+              optionalElement={downloadElement}
+            />
           </div>
         );
       })}

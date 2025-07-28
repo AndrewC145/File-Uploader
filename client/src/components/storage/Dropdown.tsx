@@ -11,9 +11,11 @@ import { Button } from "../ui/button";
 function DropDown({
   onFunctionClick,
   icon,
+  optionalElement,
 }: {
   onFunctionClick?: () => void;
   icon?: React.ReactNode;
+  optionalElement?: React.ReactNode;
 }) {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -26,6 +28,7 @@ function DropDown({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[80px]">
         <DropdownMenuGroup>
+          {optionalElement}
           <DropdownMenuItem onClick={onFunctionClick} className="cursor-pointer text-red-600">
             Delete
           </DropdownMenuItem>
