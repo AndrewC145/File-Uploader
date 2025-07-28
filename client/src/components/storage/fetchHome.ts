@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const fetchHomeFiles = async (
   PORT: string,
-  userId: string,
+  userId: number,
   setHomeFiles: (files: any[]) => void,
   setHomeId: (id: number) => void,
 ): Promise<void> => {

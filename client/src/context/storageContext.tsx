@@ -4,7 +4,7 @@ import { createContext, type Dispatch, type SetStateAction } from "react";
 type StorageContextType = {
   files: any[];
   setFiles: Dispatch<SetStateAction<any[]>>;
-  fetchFiles: (userId: string, folderId: number | null, folderName: string) => Promise<void>;
+  fetchFiles: (userId: number, folderId: number | null, folderName: string) => Promise<void>;
   homeId: number | null;
   setHomeId: Dispatch<SetStateAction<number | null>>;
   homeFiles: any[];

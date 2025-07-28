@@ -11,7 +11,7 @@ function StorageProvider({ children }: { children: React.ReactNode }) {
   const PORT = import.meta.env.VITE_API_URL;
 
   const fetchFiles = useCallback(
-    async (userId: string, folderId: number | null, folderName: string) => {
+    async (userId: number, folderId: number | null, folderName: string) => {
       try {
         const response = await axios.get(
           `${PORT}/${userId}/${folderId}/${folderName}/displayFiles`,

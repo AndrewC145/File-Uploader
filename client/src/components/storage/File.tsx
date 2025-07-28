@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { memo } from "react";
+import { memo, useContext } from "react";
 import DropDown from "./Dropdown";
 import { EllipsisVertical } from "lucide-react";
 import axios from "axios";
+import { fetchHomeFiles } from "./fetchHome";
+import StorageContext from "@/context/storageContext";
+import { useLocation } from "react-router";
+import type { Location } from "react-router";
 
 const File = memo(function File({
   userId,
@@ -13,15 +17,20 @@ const File = memo(function File({
   files: any[];
   folderId: number | null;
 }) {
+  const location: Location = useLocation();
+  const { fetchFiles, setHomeFiles, setHomeId } = useContext(StorageContext);
+
   if (!files || files.length === 0) {
     return <p className="py-4 text-center text-gray-500">No files found.</p>;
   }
 
+  const path: string = window.location.pathname;
+  const folderName: string = location.state?.folderName;
   const PORT = import.meta.env.VITE_API_URL;
 
   const handleDelete = async (fileId: string) => {
     try {
-      await axios.delete(`${PORT}/deleteFile`, {
+      const response = await axios.delete(`${PORT}/deleteFile`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -31,6 +40,11 @@ const File = memo(function File({
           userId,
         },
       });
+      if (response.status === 200 && path === "/storage") {
+        fetchHomeFiles(PORT, userId, setHomeFiles, setHomeId);
+      } else {
+        fetchFiles(userId, folderId, folderName);
+      }
     } catch (error: any) {
       console.error("Error deleting file:", error);
     }
