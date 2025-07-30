@@ -51,8 +51,31 @@ const File = memo(function File({
     }
   };
 
-  const downloadElement = (
-    <DropdownMenuItem className="cursor-pointer text-green-600">Download</DropdownMenuItem>
+  const handleDownload = async (fileId: string) => {
+    try {
+      const response = await axios.get(`${PORT}/download`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        params: {
+          fileId,
+          userId,
+          folderId,
+        },
+        responseType: "blob",
+      });
+      if (response.status === 200) {
+        downloadFile(response);
+      }
+    } catch (error: any) {
+      console.error("Error downloading file:", error);
+    }
+  };
+
+  const downloadElement = (onClick: React.MouseEventHandler) => (
+    <DropdownMenuItem onClick={onClick} className="cursor-pointer text-green-600">
+      Download
+    </DropdownMenuItem>
   );
 
   return (
@@ -70,7 +93,7 @@ const File = memo(function File({
             <DropDown
               onFunctionClick={() => handleDelete(file.id)}
               icon={<EllipsisVertical />}
-              optionalElement={downloadElement}
+              optionalElement={downloadElement(() => handleDownload(file.id))}
             />
           </div>
         );
@@ -78,5 +101,32 @@ const File = memo(function File({
     </>
   );
 });
+
+function downloadFile(response: any) {
+  const blob: Blob = new Blob([response.data], {
+    type: response.data.type,
+  });
+
+  let fileName: string = response.headers["content-disposition"];
+
+  if (fileName) {
+    fileName = fileName.split("filename=")[1].replace(/"/g, "");
+  }
+
+  const url: string = window.URL.createObjectURL(blob);
+
+  const downloadLink: HTMLAnchorElement = document.createElement("a");
+  downloadLink.download = fileName;
+  downloadLink.href = url;
+
+  downloadLink.onclick = () => {
+    setTimeout(() => {
+      window.URL.revokeObjectURL(downloadLink.href);
+    }, 1500);
+  };
+
+  downloadLink.click();
+  downloadLink.remove();
+}
 
 export default File;
