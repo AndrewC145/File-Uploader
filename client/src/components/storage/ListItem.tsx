@@ -2,11 +2,19 @@
 import { Ellipsis } from "lucide-react";
 import DropDown from "./Dropdown";
 import axios from "axios";
-import { useFolders } from "./FolderLoader";
 import { useNavigate } from "react-router";
 
-function ListItem({ name, folderId, userId }: { name: string; folderId: number; userId: string }) {
-  const { getFolders } = useFolders(userId);
+function ListItem({
+  name,
+  folderId,
+  userId,
+  getFolders,
+}: {
+  name: string;
+  folderId: number;
+  userId: string;
+  getFolders: () => void;
+}) {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -31,8 +39,13 @@ function ListItem({ name, folderId, userId }: { name: string; folderId: number; 
         },
       });
       if (response.status === 200) {
-        console.log("Folder deleted successfully:", response.data);
         getFolders();
+        navigate("/storage", {
+          state: {
+            folderId: null,
+            folderName: null,
+          },
+        });
       }
     } catch (error: any) {
       console.error("Error deleting folder:", error);

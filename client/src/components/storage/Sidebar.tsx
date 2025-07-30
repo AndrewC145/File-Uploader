@@ -30,7 +30,13 @@ function Sidebar() {
         </div>
         <ul className="flex flex-col text-lg">
           {folders.map((folder) => (
-            <ListItem key={folder.id} name={folder.name} folderId={folder.id} userId={userId} />
+            <ListItem
+              key={folder.id}
+              name={folder.name}
+              folderId={folder.id}
+              userId={userId}
+              getFolders={getFolders}
+            />
           ))}
         </ul>
       </div>
