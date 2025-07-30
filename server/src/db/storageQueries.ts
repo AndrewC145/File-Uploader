@@ -51,15 +51,14 @@ async function storeFolder(userId: number, folderName: string): Promise<any> {
 }
 
 async function deleteFolderFromDB(folderId: number): Promise<void> {
-  await prisma.folder.delete({
-    where: {
-      id: folderId,
-    },
-  });
-
   await prisma.file.deleteMany({
     where: {
       folderId: folderId,
+    },
+  });
+  await prisma.folder.delete({
+    where: {
+      id: folderId,
     },
   });
 }
