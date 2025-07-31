@@ -44,7 +44,6 @@ function Login() {
         setIsLoggedIn(true);
       }
     } catch (error: any) {
-      console.log(error);
       setError(error.response.data.error);
       setUser(null);
       setIsLoggedIn(false);

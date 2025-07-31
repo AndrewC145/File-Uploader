@@ -9,6 +9,7 @@ async function storeFile(
   fileType: string
 ): Promise<any> {
   const existingFile = await findFile(userId, fileId, folderId);
+  console.log(existingFile);
 
   if (existingFile) {
     throw new Error('File already exists in this folder');

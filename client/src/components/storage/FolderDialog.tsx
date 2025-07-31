@@ -38,7 +38,6 @@ function FolderDialog({ openButton, action, getFolders }: FolderDialogProps) {
         withCredentials: true,
       });
       if (response.status === 200) {
-        console.log("Folder created successfully:", response.data);
         setFolderDialogOpen(false);
         getFolders();
         setError("");

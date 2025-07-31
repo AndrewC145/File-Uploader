@@ -42,8 +42,6 @@ async function deleteFolderFromSupabase(
     (file) => `${userId}/${folderName}/${file.name}`
   );
 
-  console.log('Files to delete:', filesToDelete);
-
   const { data: list, error: deleteError } = await supabase.storage
     .from('users')
     .remove(filesToDelete);

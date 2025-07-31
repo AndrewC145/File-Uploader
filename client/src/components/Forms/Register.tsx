@@ -23,7 +23,6 @@ function Register() {
         },
         withCredentials: true,
       });
-      console.log(response);
       setSuccess(response.data.message);
       setError([]);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
