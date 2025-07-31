@@ -18,7 +18,7 @@ function Features() {
         </h1>
         <p className="text-md mt-5">These are some of the features we offer here at Packet</p>
       </div>
-      <div className="mx-20 grid grid-cols-2 grid-rows-[auto_1fr] gap-5">
+      <div className="mx-5 grid grid-cols-2 grid-rows-[auto_1fr] gap-3 sm:mx-20 sm:gap-5">
         <div className="col-span-2">
           <FeatureCard
             title="Convenient Storage"
@@ -46,14 +46,14 @@ function Features() {
 function FeatureCard({ title, description, image, vertical }: FeatureCardProps) {
   if (vertical) {
     return (
-      <div className="flex flex-col items-center rounded-xl bg-gray-200 px-10 pt-10">
-        <div className="flex flex-col">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl">{title}</h2>
-          <p className="mt-3 mb-8 text-base">{description}</p>
+      <div className="flex flex-col items-center rounded-xl bg-gray-200 px-3 pt-3 sm:px-5 sm:pt-5 md:px-10 md:pt-10">
+        <div className="flex flex-1 flex-col">
+          <h2 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">{title}</h2>
+          <p className="mt-3 mb-8 text-xs sm:text-base">{description}</p>
         </div>
         <div className="flex w-full justify-center">
           <img
-            className="h-[200px] w-[250px] rounded-t-2xl object-cover sm:w-[350px] md:h-[300px] md:w-[450px] lg:w-[550px] xl:w-[650px] 2xl:h-[350px] 2xl:w-[700px]"
+            className="size-full rounded-t-2xl object-cover sm:w-[350px] md:h-[300px] md:w-[450px] lg:w-[550px] xl:w-[650px] 2xl:h-[350px] 2xl:w-[700px]"
             src={image}
             alt={title}
           />
@@ -63,13 +63,13 @@ function FeatureCard({ title, description, image, vertical }: FeatureCardProps) 
   }
 
   return (
-    <div className="flex h-[300px] gap-20 rounded-xl bg-gray-200 px-10 pt-10 sm:h-[400px] md:h-[450px] xl:h-[500px]">
-      <div className="max-w-[30%] xl:max-w-[50%]">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl">{title}</h2>
-        <p className="mt-3 text-base">{description}</p>
+    <div className="flex h-[300px] gap-5 rounded-xl bg-gray-200 px-5 pt-5 sm:h-[400px] sm:gap-10 md:h-[450px] md:px-10 md:pt-10 lg:gap-20 xl:h-[500px]">
+      <div className="max-w-[40%] sm:max-w-[35%] xl:max-w-[50%]">
+        <h2 className="text-lg sm:text-xl md:text-3xl lg:text-4xl xl:text-5xl">{title}</h2>
+        <p className="mt-3 text-xs md:text-base">{description}</p>
       </div>
-      <div className="w-[100%]">
-        <img className="size-full rounded-t-2xl object-cover" src={image} />
+      <div className="h-[80%] self-end">
+        <img className="h-full w-full rounded-t-2xl object-cover" src={image} />
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ function Header() {
     <header className="p-3 pb-0 md:p-5 md:pb-0 xl:p-7 xl:pb-0">
       <nav className="flex items-center justify-between border-b-1 pb-3">
         <Link to="/">
-          <h1 className="text-md font-nunito font-bold text-gray-800 md:text-lg xl:text-3xl 2xl:text-4xl">
+          <h1 className="font-nunito text-lg font-bold text-gray-800 lg:text-xl xl:text-3xl 2xl:text-4xl">
             Packet
           </h1>
         </Link>
@@ -22,7 +22,7 @@ function Header() {
           {user !== null ? (
             <>
               <HeaderButton
-                className="bg-gray-200 px-3 py-2 text-sm text-black hover:bg-gray-300"
+                className="bg-gray-200 px-2 py-1 text-sm text-black hover:bg-gray-300 sm:px-3 sm:py-2"
                 text="Storage"
                 link="/storage"
               />
@@ -31,12 +31,12 @@ function Header() {
           ) : (
             <>
               <HeaderButton
-                className="bg-gray-200 px-3 py-2 text-sm text-black hover:bg-gray-300"
+                className="bg-gray-200 px-2 py-1 text-sm text-black hover:bg-gray-300 sm:px-3 sm:py-2"
                 text="Sign Up"
                 link="/register"
               />
               <HeaderButton
-                className="bg-blue-400 px-3 py-2 text-white hover:bg-blue-500"
+                className="bg-blue-400 px-2 py-1 text-white hover:bg-blue-500 sm:px-3 sm:py-2"
                 text="Login"
                 link="/login"
               />
@@ -60,7 +60,7 @@ function Header() {
 
     return (
       <Button
-        className="cursor-pointer bg-blue-400 px-3 py-2 text-white hover:bg-blue-500"
+        className="cursor-pointer bg-blue-400 px-2 py-1 text-white hover:bg-blue-500 sm:px-3 sm:py-2"
         onClick={logoutUser}
       >
         Logout
