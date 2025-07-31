@@ -15,17 +15,20 @@ function Sidebar() {
   const { folders, getFolders } = useFolders(userId);
   const folderAction = `${PORT}/${userId}/createFolder`;
   return (
-    <aside className="h-screen w-[20%] bg-gray-200">
-      <div className="px-4 py-2">
-        <div className="flex items-center justify-between p-2">
-          <h2 className="text-lg md:text-xl 2xl:text-2xl">Folders</h2>
+    <aside className="h-screen w-[35%] bg-gray-200 sm:w-[25%] lg:w-[20%]">
+      <div className="px-4 py-2 md:px-2">
+        <div className="flex flex-col items-center justify-between p-2 sm:flex-row sm:gap-4">
+          <h2 className="text-md mb-2 sm:mb-0 sm:text-lg md:text-xl 2xl:text-2xl">Folders</h2>
           <div className="flex items-center justify-center gap-2">
             <FolderDialog
-              openButton={<IconButton icon={<Plus />} />}
+              openButton={<IconButton icon={<Plus size={18} className="sm:size-5" />} />}
               action={folderAction}
               getFolders={getFolders}
             />
-            <FileDialog openButton={<IconButton icon={<FileUp />} />} action={action} />
+            <FileDialog
+              openButton={<IconButton icon={<FileUp size={18} className="sm:size-5" />} />}
+              action={action}
+            />
           </div>
         </div>
         <ul className="flex flex-col text-lg">

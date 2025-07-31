@@ -53,7 +53,7 @@ function ListItem({
   };
   return (
     <div onClick={handleClick} className="flex items-center justify-between">
-      <li className="flex w-full cursor-pointer items-center justify-between rounded-lg p-2 hover:bg-gray-100">
+      <li className="flex w-full cursor-pointer items-center justify-between rounded-lg p-2 text-sm hover:bg-gray-100 sm:text-base">
         {name}
       </li>
       <DropDown icon={<Ellipsis />} onFunctionClick={handleDelete} />

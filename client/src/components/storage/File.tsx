@@ -84,12 +84,14 @@ const File = memo(function File({
         return (
           <div
             key={file.id}
-            className="flex items-center justify-between px-3 py-2 hover:bg-gray-100 md:px-5 xl:px-7"
+            className="flex items-center justify-between px-3 py-2 text-xs hover:bg-gray-100 md:px-5 md:text-sm xl:px-7"
           >
             <p className="flex-[1.5]">{file.name}</p>
-            <p className="flex-1">{file.metadata.mimetype}</p>
-            <p className="flex-1">{file.metadata.size} bytes</p>
-            <p className="flex-1">{new Date(file.metadata.lastModified).toLocaleDateString()}</p>
+            <p className="hidden flex-1 sm:flex">{file.metadata.mimetype}</p>
+            <p className="hidden flex-1 sm:flex">{file.metadata.size} bytes</p>
+            <p className="hidden flex-1 sm:flex">
+              {new Date(file.metadata.lastModified).toLocaleDateString()}
+            </p>
             <DropDown
               onFunctionClick={() => handleDelete(file.id)}
               icon={<EllipsisVertical />}
