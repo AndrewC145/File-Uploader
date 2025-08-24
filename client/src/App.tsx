@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
-import Header from "./components/home/Header";
-import Home from "./components/home/Home";
-import Register from "./components/forms/Register";
-import Login from "./components/forms/Login";
+import Header from "./components/Home/Header";
+import Home from "./components/Home/Home";
+import Register from "./components/Forms/Register";
+import Login from "./components/Forms/Login";
 import Storage from "./components/storage/Storage";
 import cloudBg from "./assets/images/cloud-hero.jpg";
 import UserProvider from "./context/userProvider";
